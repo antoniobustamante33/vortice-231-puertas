@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vórtice de 231 Puertas · Espiral de Alef</title>
+<style>
+@property --spin { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+
+:root{
+  --bg:#05070c;
+  --ink:#e6edf3;
+  --muted:#8b949e;
+  --gold:#f0b429;
+  --blue:#58a6ff;
+  --green:#3fb950;
+  --violet:#a371f7;
+  --panel:rgba(13,18,28,.72);
+  --panel2:rgba(18,24,36,.85);
+  --line:rgba(255,255,255,.09);
+  --heb:"Segoe UI Historic","Arial Hebrew",David,"Frank Ruehl CLM","Times New Roman",serif;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+.aurora{
+  position:fixed; inset:-25%; z-index:0; pointer-events:none; opacity:.75;
+  background:
+    radial-gradient(46% 38% at 22% 18%, rgba(240,180,41,.16), transparent 70%),
+    radial-gradient(40% 42% at 82% 28%, rgba(88,166,255,.16), transparent 70%),
+    radial-gradient(52% 46% at 52% 92%, rgba(163,113,247,.14), transparent 70%),
+    radial-gradient(circle at 50% 45%, #131a27 0%, #05070c 72%);
+  filter:blur(20px);
+  animation:drift 34s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  0%{transform:translate3d(-2%,-1%,0) scale(1.02)}
+  50%{transform:translate3d(3%,2%,0) scale(1.07)}
+  100%{transform:translate3d(-1%,3%,0) scale(1.04)}
+}
+.grain{
+  position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.35;
+  background-image:radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size:3px 3px;
+  mix-blend-mode:overlay;
+}
+.wrap{position:relative; z-index:2; max-width:1220px; margin:0 auto; padding:26px 18px 90px}
+
+.masthead{text-align:center; padding:18px 0 26px}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:9px;
+  font-size:.7rem; letter-spacing:.34em; text-transform:uppercase;
+  color:var(--gold); padding:7px 15px; border-radius:999px;
+  border:1px solid rgba(240,180,41,.28); background:rgba(240,180,41,.07);
+  animation:rise .8s var(--ease-out) both;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+
+h1{
+  font-size:clamp(1.85rem,5.2vw,3.2rem); margin:16px 0 8px; line-height:1.04;
+  background:linear-gradient(100deg,#fff 6%,var(--gold) 42%,#ff8f3f 60%,var(--blue) 94%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:-.5px; animation:rise .9s var(--ease-out) .1s both;
+}
+h1 .heb{font-family:var(--heb);font-weight:600}
+.sub{color:var(--muted); font-size:clamp(.86rem,1.9vw,1.02rem); margin:0 auto; max-width:64ch; line-height:1.65; animation:rise .9s var(--ease-out) .2s both}
+.sub b{color:var(--ink); font-weight:600}
+.sub .n{color:var(--gold); font-family:ui-monospace,Consolas,monospace; font-size:.95em; letter-spacing:-.4px}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+.stats{
+  display:grid; gap:12px; margin:26px auto 0; max-width:1000px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+}
+.stat{
+  position:relative; overflow:hidden; text-align:left;
+  background:var(--panel); border:1px solid var(--line); border-radius:15px; padding:14px 15px;
+  backdrop-filter:blur(9px);
+  transition:transform .45s var(--ease-out), border-color .45s, box-shadow .45s;
+  animation:rise .8s var(--ease-out) both;
+}
+.stat::after{
+  content:""; position:absolute; inset:auto -40% -70% auto; width:150px; height:150px; border-radius:50%;
+  background:radial-gradient(circle,var(--tint,rgba(240,180,41,.3)),transparent 68%);
+  opacity:.55; transform:translateY(35%);
+}
+.stat:hover{transform:translateY(-4px); border-color:rgba(255,255,255,.2); box-shadow:0 16px 40px -20px var(--tint,rgba(240,180,41,.6))}
+.stat .k{display:block; font-size:.63rem; letter-spacing:.19em; text-transform:uppercase; color:var(--muted); margin-bottom:7px}
+.stat .v{display:block; font-size:1.18rem; font-weight:700; color:var(--tintc,var(--gold)); letter-spacing:-.3px; line-height:1.15; word-break:break-word}
+.stat .v.big{font-size:.98rem; font-family:ui-monospace,Consolas,monospace; letter-spacing:-.5px}
+.stat .n{display:block; font-size:.7rem; color:var(--muted); margin-top:5px}
+
+.grid-main{display:grid; gap:18px; margin-top:22px; grid-template-columns:minmax(0,1fr) 316px; align-items:start}
+@media (max-width:940px){.grid-main{grid-template-columns:minmax(0,1fr)}}
+
+.stage{
+  position:relative; border-radius:26px; padding:12px;
+  background:var(--panel2); border:1px solid var(--line);
+  box-shadow:0 40px 90px -50px #000, inset 0 1px 0 rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.stage::before{
+  content:""; position:absolute; inset:0; border-radius:26px; pointer-events:none; z-index:0; opacity:.55;
+  background:conic-gradient(from var(--spin), transparent 0 58%, rgba(240,180,41,.42) 76%, rgba(88,166,255,.42) 87%, transparent 100%);
+  animation:rot 16s linear infinite;
+  mask:linear-gradient(#000,#000) content-box exclude, linear-gradient(#000,#000);
+  padding:1px;
+  -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite:xor;
+}
+@keyframes rot{to{--spin:360deg}}
+.stage>*{position:relative; z-index:1}
+.canvas-box{display:flex; justify-content:center; padding:4px 2px 0}
+canvas{touch-action:manipulation; cursor:crosshair; border-radius:20px}
+
+.controls{display:flex; flex-wrap:wrap; gap:9px; align-items:center; padding:13px 6px 5px}
+.btn{
+  appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.04);
+  color:var(--ink); font:inherit; font-size:.79rem; padding:8px 13px; border-radius:11px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:7px;
+  transition:background .3s, border-color .3s, transform .25s var(--ease-out), color .3s;
+}
+.btn:hover{background:rgba(255,255,255,.1); border-color:rgba(240,180,41,.45); transform:translateY(-2px); color:#fff}
+.btn:active{transform:translateY(0)}
+.btn.on{background:rgba(240,180,41,.16); border-color:rgba(240,180,41,.55); color:var(--gold); box-shadow:0 0 20px -6px rgba(240,180,41,.7)}
+.btn:focus-visible,.puerta:focus-visible,select:focus-visible,input:focus-visible,tr:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+.btn .ic{font-size:.9em}
+.btn.primary{background:linear-gradient(135deg,rgba(240,180,41,.24),rgba(240,180,41,.08)); border-color:rgba(240,180,41,.5); color:var(--gold)}
+.ctl{display:flex; align-items:center; gap:8px; font-size:.72rem; color:var(--muted); letter-spacing:.05em}
+.ctl input[type=range]{appearance:none; width:96px; height:4px; border-radius:4px; background:linear-gradient(90deg,var(--gold),rgba(255,255,255,.14)); cursor:pointer}
+.ctl input[type=range]::-webkit-slider-thumb{appearance:none; width:14px; height:14px; border-radius:50%; background:#fff; box-shadow:0 0 10px rgba(240,180,41,.9); cursor:pointer}
+.ctl input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(240,180,41,.9);cursor:pointer}
+select{appearance:none; background:rgba(255,255,255,.05); color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:7px 26px 7px 11px; font:inherit; font-size:.76rem; cursor:pointer; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%); background-position:calc(100% - 15px) 52%, calc(100% - 10px) 52%; background-size:5px 5px,5px 5px; background-repeat:no-repeat}
+select option{background:#0d121c; color:var(--ink)}
+.spacer{flex:1 1 auto}
+
+.tip{
+  position:fixed; z-index:60; pointer-events:none; opacity:0; transform:translate(-50%,-118%) scale(.94);
+  background:rgba(8,11,18,.96); border:1px solid rgba(255,255,255,.16); border-radius:12px;
+  padding:9px 12px; font-size:.76rem; line-height:1.5; white-space:nowrap;
+  box-shadow:0 20px 46px -18px #000; transition:opacity .18s, transform .18s var(--ease-out);
+}
+.tip.on{opacity:1; transform:translate(-50%,-124%) scale(1)}
+.tip b{color:var(--gold)}
+.tip .heb{font-family:var(--heb); font-size:1.15em; color:#fff; vertical-align:-1px}
+.tip .muted{color:var(--muted)}
+
+.panel{
+  background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:16px;
+  backdrop-filter:blur(9px); box-shadow:0 30px 70px -46px #000;
+  position:relative; overflow:hidden;
+}
+.panel::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:linear-gradient(180deg,var(--pc,var(--gold)),transparent);
+  box-shadow:0 0 18px var(--pc,var(--gold));
+}
+.panel h3{margin:0 0 3px; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.panel .lv{display:flex; align-items:baseline; gap:10px; margin:2px 0 12px}
+.panel .lv .num{font-size:2.5rem; font-weight:800; line-height:1; color:var(--pc,var(--gold)); text-shadow:0 0 26px color-mix(in srgb, var(--pc,#f0b429) 55%, transparent)}
+.panel .lv .heb{font-family:var(--heb); font-size:2rem; color:#fff; line-height:1}
+.panel .lv .tag{font-size:.68rem; color:var(--muted); letter-spacing:.09em; text-transform:uppercase}
+.kv{display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.kv div{background:rgba(9,13,20,.72); padding:9px 11px; display:flex; justify-content:space-between; gap:12px; align-items:baseline; font-size:.78rem}
+.kv div span{color:var(--muted); white-space:nowrap}
+.kv div b{font-weight:600; text-align:right; word-break:break-all}
+.kv div b.num{font-family:ui-monospace,Consolas,monospace; color:var(--blue); letter-spacing:-.4px}
+.kv div b.gem{color:var(--gold); font-size:1.05rem; font-family:var(--heb)}
+.kv div b.mono{font-family:ui-monospace,Consolas,monospace; font-size:.74rem; color:var(--green)}
+.fade-swap{animation:fadeSwap .5s var(--ease-out)}
+@keyframes fadeSwap{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+.legend{margin-top:12px; display:grid; gap:5px}
+.lg{display:flex; align-items:center; gap:9px; font-size:.71rem; padding:6px 9px; border-radius:9px; border:1px solid transparent; cursor:pointer; transition:background .25s, border-color .25s; color:var(--muted)}
+.lg:hover{background:rgba(255,255,255,.05); border-color:var(--line); color:var(--ink)}
+.lg.act{background:rgba(240,180,41,.1); border-color:rgba(240,180,41,.35); color:var(--ink)}
+.lg i{width:9px; height:9px; border-radius:50%; flex:none; box-shadow:0 0 9px currentColor}
+.lg .n{font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600}
+.lg .s{margin-left:auto; font-size:.63rem; color:var(--muted); letter-spacing:.04em}
+
+.sec{margin-top:40px}
+.sec-head{display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; margin-bottom:16px; padding-bottom:11px; border-bottom:1px solid var(--line)}
+.sec-head h2{margin:0; font-size:clamp(1.05rem,2.4vw,1.42rem); font-weight:700; letter-spacing:-.2px; display:flex; align-items:center; gap:11px}
+.sec-head h2 .heb{font-family:var(--heb); color:var(--gold)}
+.sec-head p{margin:0; color:var(--muted); font-size:.8rem; line-height:1.6; flex:1 1 260px}
+
+.puertas-box{display:grid; gap:16px; grid-template-columns:minmax(0,1fr) 250px; align-items:start}
+@media (max-width:900px){.puertas-box{grid-template-columns:minmax(0,1fr)}}
+.doors{
+  display:grid; grid-template-columns:repeat(21, minmax(0,1fr)); gap:3px;
+  padding:15px; background:var(--panel); border:1px solid var(--line); border-radius:18px; overflow-x:auto;
+}
+.puerta{
+  appearance:none; position:relative; aspect-ratio:1/1.35; min-height:15px; padding:0; cursor:pointer;
+  border:1px solid rgba(255,255,255,.07); border-radius:4px; background:rgba(255,255,255,.03);
+  font-family:var(--heb); font-size:clamp(7px,.85vw,12px); color:var(--ink);
+  display:flex; overflow:hidden; isolation:isolate;
+  transition:border-color .3s, box-shadow .3s, background .3s;
+  animation:doorIn .5s var(--ease-out) both; animation-delay:var(--d,0ms);
+}
+@keyframes doorIn{from{opacity:0;transform:scale(.55) translateY(8px)}to{opacity:1;transform:none}}
+.puerta .leaf{
+  position:absolute; inset:0; display:grid; place-items:center; font-size:.96em; line-height:1;
+  background:linear-gradient(160deg, rgba(240,180,41,.14), rgba(88,166,255,.1));
+  transition:transform .42s var(--ease-out), background .3s, color .3s;
+}
+.puerta .leaf.a{transform-origin:left center; border-right:1px solid rgba(255,255,255,.12)}
+.puerta .leaf.b{transform-origin:right center; background:rgba(255,255,255,.015)}
+.puerta:hover{border-color:rgba(240,180,41,.6); box-shadow:0 0 16px -3px rgba(240,180,41,.55); z-index:3}
+.puerta:hover .leaf.a{transform:perspective(200px) rotateY(-68deg); background:rgba(240,180,41,.3)}
+.puerta:hover .leaf.b{transform:perspective(200px) rotateY(68deg); background:rgba(88,166,255,.3)}
+.puerta.on{border-color:rgba(240,180,41,.75); box-shadow:0 0 20px -2px rgba(240,180,41,.6)}
+.doors.wave .puerta{animation:open .55s var(--ease-out) both; animation-delay:var(--w,0ms)}
+@keyframes open{
+  0%{transform:none}
+  45%{transform:translateY(-4px) scaleY(1.16); box-shadow:0 0 22px -2px rgba(240,180,41,.85); border-color:rgba(240,180,41,.9)}
+  100%{transform:none}
+}
+.doors-side{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:16px}
+.doors-side .big{font-size:2.9rem; font-weight:800; line-height:1; color:var(--gold); text-shadow:0 0 30px rgba(240,180,41,.55); font-variant-numeric:tabular-nums}
+.doors-side .lbl{font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+.doors-side ul{margin:14px 0 0; padding:0; list-style:none; display:grid; gap:8px}
+.doors-side li{font-size:.76rem; color:var(--muted); display:flex; justify-content:space-between; gap:10px; border-bottom:1px dashed rgba(255,255,255,.09); padding-bottom:6px}
+.doors-side li b{color:var(--ink); font-weight:600; font-family:ui-monospace,Consolas,monospace}
+.doors-side li .heb{font-family:var(--heb); color:var(--gold)}
+
+.tablebox{background:var(--panel); border:1px solid var(--line); border-radius:20px; overflow:hidden; backdrop-filter:blur(9px)}
+.tablescroll{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:.83rem; min-width:660px}
+th,td{padding:9px 13px; text-align:right; white-space:nowrap; border-bottom:1px solid rgba(255,255,255,.055)}
+th{
+  background:rgba(255,255,255,.035); color:var(--gold); font-weight:600; font-size:.68rem;
+  letter-spacing:.13em; text-transform:uppercase; position:sticky; top:0; z-index:2;
+  cursor:pointer; user-select:none; transition:background .25s, color .25s;
+}
+th:hover{background:rgba(240,180,41,.14)}
+th::after{content:"↕"; opacity:.28; margin-left:6px; font-size:.8em}
+th.sorted::after{opacity:1; color:var(--gold)}
+th.sorted::after{content:"↓"}
+th.sorted.asc::after{content:"↑"}
+th:nth-child(1),td:nth-child(1),th:nth-child(2),td:nth-child(2){text-align:center}
+td{opacity:0; transform:translateY(7px); transition:opacity .5s var(--ease-out), transform .5s var(--ease-out), background .25s}
+tr.shown td{opacity:1; transform:none}
+tbody tr{cursor:pointer; transition:background .25s}
+tbody tr:hover{background:rgba(255,255,255,.045)}
+tbody tr.act{background:rgba(240,180,41,.12); box-shadow:inset 3px 0 0 var(--rc,var(--gold))}
+td.lv{font-weight:800; color:var(--rc,var(--gold)); font-variant-numeric:tabular-nums}
+td.len b{font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums}
+td.len .heb{font-family:var(--heb); color:var(--blue); font-size:1.16em; margin-left:3px}
+td.fx{color:var(--muted); font-family:ui-monospace,Consolas,monospace; font-size:.76rem; text-align:right}
+td.val{font-family:ui-monospace,Consolas,monospace; color:var(--ink); letter-spacing:-.3px}
+td.gem{text-align:center}
+.gem-chip{
+  display:inline-grid; place-items:center; width:27px; height:27px; border-radius:50%;
+  font-weight:800; font-size:.83rem; color:#0b0f16;
+  background:radial-gradient(circle at 32% 28%, #fff0c4, var(--gold) 60%, #b8800f);
+  box-shadow:0 0 16px -2px rgba(240,180,41,.85), inset 0 -2px 5px rgba(0,0,0,.28);
+  transform:scale(.4); opacity:0; transition:transform .5s var(--ease-out), opacity .4s;
+}
+tr.shown .gem-chip{transform:none; opacity:1}
+
+.reel{display:inline-block; height:1.06em; width:1ch; overflow:hidden; vertical-align:bottom; text-align:center; line-height:1.06}
+.reel i{display:block; height:1.06em; line-height:1.06; font-style:normal; transform:translateY(0)}
+.go .reel i{transform:translateY(calc(var(--t) * -1.06em)); transition:transform .8s var(--ease); transition-delay:calc(var(--i) * 52ms)}
+.sep{opacity:.55; margin:0 .12em}
+
+.note{
+  margin:22px auto 0; max-width:760px; text-align:center; color:var(--muted);
+  font-size:.83rem; line-height:1.85;
+  background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+}
+.note .heb{font-family:var(--heb); color:var(--gold); font-size:1.15em}
+.note b{color:var(--ink)}
+.note code{font-family:ui-monospace,Consolas,monospace; color:var(--blue); font-size:.9em; background:rgba(88,166,255,.1); padding:1px 6px; border-radius:5px}
+
+.reveal{opacity:0; transform:translateY(24px); transition:opacity .8s var(--ease-out), transform .8s var(--ease-out)}
+.reveal.in{opacity:1; transform:none}
+footer{text-align:center; color:var(--muted); font-size:.72rem; margin-top:44px; opacity:.65; line-height:1.8}
+
+@media (max-width:640px){
+  .controls{justify-content:center}
+  .ctl input[type=range]{width:74px}
+  .doors{gap:2px; padding:10px}
+  .stat .v{font-size:1rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.06s !important}
+  html{scroll-behavior:auto}
+  .aurora{animation:none}
+  .stage::before{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow"><i class="dot"></i>Vórtice de 231 Puertas</span>
+    <h1>Espiral de Alef <span class="heb">א</span></h1>
+    <p class="sub">
+      Del centro <b>א</b> nacen los <b>22 niveles</b> de la escritura hebrea:
+      <span class="n" id="secuencia">1 → … → 21!</span>
+      Cada anillo despliega el anterior multiplicando por el factor que le sigue, y cada
+      número se reduce a un solo dígito por <b>gematría</b>. Pasa el cursor o haz clic en un anillo.
+    </p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="grid-main">
+    <section class="stage" id="stage" aria-label="Vórtice de anillos interactivo">
+      <div class="canvas-box">
+        <canvas id="vortex" role="img" aria-label="Diagrama de anillos concéntricos desde la letra Alef hasta 21 factorial"></canvas>
+      </div>
+      <div class="controls">
+        <button class="btn primary" id="btnPlay" aria-pressed="true"><span class="ic" id="playIc">❚❚</span><span id="playTx">Pausar</span></button>
+        <button class="btn" id="btnReplay"><span class="ic">↻</span>Reiniciar</button>
+        <button class="btn on" id="btnRot" aria-pressed="true"><span class="ic">◐</span>Rotación</button>
+        <button class="btn" id="btn3d" aria-pressed="false" title="Cambiar de vista: plano 2D o vórtice 3D"><span class="ic">⬡</span><span id="v3Tx">3D</span></button>
+        <label class="ctl">Velocidad<input type="range" id="spd" min="20" max="300" value="100" aria-label="Velocidad de animación"></label>
+        <label class="ctl">Densidad
+          <select id="dens" aria-label="Densidad de puntos por anillo">
+            <option value="1400">Baja · 1 400</option>
+            <option value="3000" selected>Media · 3 000</option>
+            <option value="6000">Alta · 6 000</option>
+          </select>
+        </label>
+        <span class="spacer"></span>
+        <span class="ctl" id="perf">—</span>
+      </div>
+      <div class="legend" id="legend" aria-label="Leyenda de anillos"></div>
+    </section>
+
+    <aside class="panel" id="panel" aria-live="polite">
+      <h3>Nivel seleccionado</h3>
+      <div class="lv">
+        <span class="num" id="pNum">21</span>
+        <span class="heb" id="pHeb">א</span>
+        <span class="tag" id="pTag">origen</span>
+      </div>
+      <div class="kv" id="pKv"></div>
+    </aside>
+  </div>
+
+  <section class="sec reveal" id="secDoors">
+    <div class="sec-head">
+      <h2>Las <span class="heb">231</span> puertas</h2>
+      <p>Cada par ordenado de letras abre una puerta: <b>21 × 11 = 231</b>. Pasa el cursor para abrirla, o pulsa el botón y se abren todas en oleada.</p>
+      <button class="btn primary" id="btnWave"><span class="ic">✦</span>Abrir las 231</button>
+    </div>
+    <div class="puertas-box">
+      <div class="doors" id="doors"></div>
+      <div class="doors-side">
+        <div class="lbl">Puertas abiertas</div>
+        <div class="big" id="doorCount">0</div>
+        <ul>
+          <li><span>Pares ordenados</span><b>21 × 11 = 231</b></li>
+          <li><span>Suma 1…21</span><b>231</b></li>
+          <li><span>Combinaciones <span class="heb">C(22,2)</span></span><b>231</b></li>
+          <li><span>Suma de los 22 valores</span><b>1 495</b></li>
+          <li><span>Gematría de 1 495</span><b class="heb">א = 1</b></li>
+          <li><span>Gematría de 21!</span><b class="heb" id="gFact">ת = 9</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec reveal" id="secTable">
+    <div class="sec-head">
+      <h2>Los 22 niveles</h2>
+      <p>Valor exacto de cada nivel (sin pérdida de precisión: <code>21! = 51 090 942 171 709 440 000</code>) y su reducción a un dígito. Haz clic en cualquier fila para aislar su anillo.</p>
+    </div>
+    <div class="tablebox">
+      <div class="tablescroll">
+        <table id="tabla">
+          <thead><tr>
+            <th data-k="k">Nivel</th>
+            <th data-k="len">Longitud</th>
+            <th data-k="fx">Fórmula</th>
+            <th data-k="v">Configuraciones</th>
+            <th data-k="g" class="gth">Gematría</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <p class="note reveal">
+    <span class="heb">א</span> Alef es el centro y el origen: 22 letras hebreas, 22 niveles, y el último es
+    <code>21! = 21 × 20 × 19 × … × 1</code>. La razón de cada nivel con el anterior es el factor
+    <code>22 − k</code>, de modo que los puntos de un anillo son exactamente un subconjunto de los del siguiente.
+    La columna <b>Gematría</b> suma sus dígitos una y otra vez hasta dejar un solo número entre 1 y 9;
+    como <code>21!</code> es múltiplo de 9, su gematría es <b>9</b>. Y de <code>Σ<sub>k=1</sub><sup>21</sup> k</code>
+    nacen las <b>231</b> puertas: el número de pares entre las 22 letras, <code>C(22,2)</code>.
+  </p>
+
+  <footer>Canvas 2D · sin dependencias · los 22 valores se calculan con <b>BigInt</b> para no perder dígitos</footer>
+</div>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+
+const TAU = Math.PI * 2;
+const LETRAS = ['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ל','מ','נ','ס','ע','פ','צ','ק','ר','ש','ת'];
+const GVAL  = [1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,200,300,400];
+const NIVEL_MAX = LETRAS.length - 1;
+
+function gematria(n){
+  let s = 0;
+  for (const ch of String(n)) s += Number(ch);
+  while (s > 9){ let t = 0; while (s > 0){ t += s % 10; s = Math.floor(s / 10); } s = t; }
+  return s;
+}
+function factors(k){
+  if (k === 0) return ['1'];
+  if (k <= 2) return Array.from({length:k}, (_, i) => String(22 - i));
+  return ['21','20','…',String(22 - k)];
+}
+
+const NIVELES = [];
+(function build(){
+  let v = 1n;
+  for (let k = 0; k <= NIVEL_MAX; k++){
+    if (k > 0) v *= BigInt(22 - k);
+    NIVELES.push({
+      k,
+      value: v,
+      digits: v.toString(),
+      formula: factors(k).join(' × '),
+      letra: LETRAS[k],
+      gv: GVAL[k],
+      gem: gematria(v),
+      hue: Math.round(k * 360 / 21)
+    });
+  }
+})();
+
+const $ = (s) => document.querySelector(s);
+const lerp = (a, b, t) => a + (b - a) * t;
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+const fmt = (d) => d.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+function reelFrag(digits){
+  const frag = document.createDocumentFragment();
+  const n = digits.length;
+  for (let i = 0; i < n; i++){
+    if (i > 0 && (n - i) % 3 === 0){
+      const sep = document.createElement('span');
+      sep.className = 'sep';
+      sep.textContent = ',';
+      frag.appendChild(sep);
+    }
+    const r = document.createElement('span');
+    r.className = 'reel';
+    r.style.setProperty('--t', digits[i]);
+    r.style.setProperty('--i', n - 1 - i);
+    for (let d = 0; d <= 9; d++){
+      const it = document.createElement('i');
+      it.textContent = String(d);
+      r.appendChild(it);
+    }
+    frag.appendChild(r);
+  }
+  return frag;
+}
+
+(function headerStats(){
+  const last = NIVELES[NIVEL_MAX];
+  const sumLetras = GVAL.reduce((a, b) => a + b, 0);
+  const cards = [
+    {k:'Letras', v:'22', n:'א … ת · hebreo cuadrado', c:'var(--gold)'},
+    {k:'Niveles', v:'0 – 21', n:'cada uno multiplica por (22 − k)', c:'var(--blue)'},
+    {k:'21! exacto', v:fmt(last.digits), n:'sin pérdida de precisión', c:'var(--green)', big:true},
+    {k:'Gematría de 21!', v:String(last.gem), n:'suma de dígitos → un dígito', c:'var(--gold)'},
+    {k:'Puertas', v:'231', n:'C(22,2) = Σ 1…21 = 21 × 11', c:'var(--violet)'},
+    {k:'Σ de las 22 letras', v:fmt(String(sumLetras)), n:'gematría → ' + gematria(sumLetras), c:'var(--blue)'}
+  ];
+  const host = $('#stats');
+  cards.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'stat';
+    el.style.animationDelay = (0.14 + i * 0.07) + 's';
+    el.style.setProperty('--tint', c.c);
+    el.style.setProperty('--tintc', c.c);
+    const k = document.createElement('span'); k.className = 'k'; k.textContent = c.k;
+    const v = document.createElement('span'); v.className = 'v' + (c.big ? ' big' : ''); v.textContent = c.v;
+    const n = document.createElement('span'); n.className = 'n'; n.textContent = c.n;
+    el.append(k, v, n);
+    host.appendChild(el);
+  });
+  $('#gFact').textContent = 'ת = ' + last.gem;
+  $('#secuencia').textContent = '1 → ' +
+    NIVELES.slice(1, 6).map((L) => fmt(L.digits)).join(' → ') +
+    ' → … → ' + fmt(last.digits);
+})();
+
+(function table(){
+  const tbody = $('#tabla tbody');
+  NIVELES.forEach((L, idx) => {
+    const tr = document.createElement('tr');
+    tr.dataset.k = L.k;
+    tr.tabIndex = 0;
+    tr.style.setProperty('--rc', 'hsl(' + L.hue + ' 80% 62%)');
+    const len = document.createElement('td');
+    len.className = 'len';
+    len.innerHTML = '<b>' + L.k + '</b><span class="heb">' + L.letra + '</span>';
+    const fx = document.createElement('td');
+    fx.className = 'fx';
+    fx.textContent = L.formula;
+    const val = document.createElement('td');
+    val.className = 'val';
+    val.appendChild(reelFrag(L.digits));
+    const gem = document.createElement('td');
+    gem.className = 'gem';
+    gem.innerHTML = '<span class="gem-chip">' + L.gem + '</span>';
+    const lv = document.createElement('td');
+    lv.className = 'lv';
+    lv.textContent = String(L.k);
+    tr.append(lv, len, fx, val, gem);
+    tr.addEventListener('click', () => select(L.k, true));
+    tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); select(L.k, true); } });
+    tr._idx = idx;
+    tbody.appendChild(tr);
+  });
+
+  const heads = [...document.querySelectorAll('#tabla th')];
+  const cmp = {
+    k:(a,b) => a.k - b.k,
+    len:(a,b) => a.k - b.k,
+    fx:(a,b) => a.k - b.k,
+    v:(a,b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0),
+    g:(a,b) => a.gem - b.gem
+  };
+  heads.forEach((h) => {
+    h.addEventListener('click', () => {
+      const asc = !h.classList.contains('asc');
+      heads.forEach((o) => o.classList.remove('sorted', 'asc'));
+      h.classList.add('sorted');
+      if (asc) h.classList.add('asc');
+      const rows = [...tbody.children];
+      rows.sort((x, y) => {
+        const r = cmp[h.dataset.k](NIVELES[+x.dataset.k], NIVELES[+y.dataset.k]);
+        return asc ? r : -r;
+      });
+      rows.forEach((r) => tbody.appendChild(r));
+    });
+  });
+})();
+
+(function doors(){
+  const host = $('#doors');
+  const total = 21 * 11;
+  const frag = document.createDocumentFragment();
+  for (let r = 0; r < 11; r++){
+    for (let c = 0; c < 21; c++){
+      const i = r * 21 + c;
+      const a = LETRAS[c + 1];
+      const b = LETRAS[r];
+      const btn = document.createElement('button');
+      btn.className = 'puerta';
+      btn.type = 'button';
+      btn.style.setProperty('--d', (i * 5) + 'ms');
+      btn.setAttribute('aria-label', 'Puerta ' + (i + 1) + ': ' + a + ' y ' + b);
+      btn.innerHTML = '<span class="leaf a">' + a + '</span><span class="leaf b">' + b + '</span>';
+      const sum = GVAL[c + 1] + GVAL[r];
+      const info = { text: '<b>' + a + ' × ' + b + '</b> · gematría ' + sum + ' → <b>' + gematria(sum) + '</b>', el: btn };
+      btn._info = info;
+      frag.appendChild(btn);
+    }
+  }
+  host.appendChild(frag);
+
+  let opened = new Set();
+  host.addEventListener('pointerover', (e) => {
+    const p = e.target.closest('.puerta');
+    if (!p) return;
+    showTip(p, p._info.text);
+  });
+  host.addEventListener('pointerout', (e) => {
+    if (e.target.closest('.puerta')) hideTip();
+  });
+  host.addEventListener('focusin', (e) => {
+    const p = e.target.closest('.puerta');
+    if (p) showTip(p, p._info.text);
+  });
+  host.addEventListener('click', (e) => {
+    const p = e.target.closest('.puerta');
+    if (!p) return;
+    if (opened.has(p)) { p.classList.remove('on'); opened.delete(p); }
+    else { p.classList.add('on'); opened.add(p); }
+    countEl.textContent = String(opened.size);
+  });
+  host.addEventListener('pointerleave', hideTip);
+
+  const countEl = $('#doorCount');
+  const btnWave = $('#btnWave');
+  countEl.dataset.total = String(total);
+
+  btnWave.addEventListener('click', () => {
+    const cells = [...host.children];
+    if (opened.size){
+      opened.clear();
+      cells.forEach((c) => { c.classList.remove('on'); c.style.removeProperty('--w'); });
+      host.classList.remove('wave');
+      countEl.textContent = '0';
+      btnWave.lastChild.textContent = 'Abrir las 231';
+      return;
+    }
+    host.classList.add('wave');
+    cells.forEach((c, i) => c.style.setProperty('--w', (i * 3.2) + 'ms'));
+    opened = new Set(cells);
+    cells.forEach((c) => c.classList.add('on'));
+    countEl.textContent = String(cells.length);
+    btnWave.lastChild.textContent = 'Cerrar las 231';
+    setTimeout(() => {
+      host.classList.remove('wave');
+      cells.forEach((c) => c.style.removeProperty('--w'));
+    }, 1400);
+  });
+})();
+
+/* ---------- Tip ---------- */
+const tipEl = $('#tip');
+function showTip(anchor, html){
+  tipEl.innerHTML = html;
+  tipEl.classList.add('on');
+  const r = anchor.getBoundingClientRect();
+  const x = r.left + r.width / 2;
+  const y = r.top;
+  tipEl.style.left = Math.max(70, Math.min(window.innerWidth - 70, x)) + 'px';
+  tipEl.style.top = Math.max(52, y) + 'px';
+}
+function hideTip(){ tipEl.classList.remove('on'); }
+
+/* ---------- Canvas ---------- */
+const canvas = $('#vortex');
+const ctx = canvas.getContext('2d');
+const stage = $('#stage');
+const RING_LEVELS = [2, 3, 4, 5, 6];
+const RADII = [0.62, 0.72, 0.81, 0.89, 0.96];
+let S = 460, DPR = 1, cx = 0, cy = 0, RMAX = 0;
+let layer = document.createElement('canvas');
+const lctx = layer.getContext('2d');
+
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const state = {
+  rotation: 0,
+  speed: 1,
+  playing: !REDUCED,
+  rotate: true,
+  cap: 3000,
+  selected: 21,
+  hover: null,
+  intro: REDUCED ? 1 : 0,
+  t: 0,
+  tick: 0,
+  last: performance.now(),
+  parade: [],
+  rings: [],
+  sparks: [],
+  waves: [],
+  reduced: REDUCED,
+  view3d: false,
+  camA: 0.62,
+  camP: 0.55,
+  camD: 0,
+  camF: 0,
+  dish: 0.38,
+  dragging: false,
+  dragX: 0,
+  dragY: 0,
+  dragMoved: false
+};
+
+function layout(){
+  const box = canvas.parentElement.getBoundingClientRect();
+  S = Math.max(300, Math.min(box.width - 8, 540));
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(S * DPR);
+  canvas.height = Math.round(S * DPR);
+  canvas.style.width = S + 'px';
+  canvas.style.height = S + 'px';
+  layer.width = canvas.width;
+  layer.height = canvas.height;
+  cx = S / 2; cy = S / 2; RMAX = S / 2 - 22;
+  build();
+  dirty = true;
+}
+
+let SPIRAL = { r0: 0, rout: 0, thMax: 0, b: 0 };
+const STREAM = { r0: 0, rEnd: 0, C: 0, L: 0, tOne: 90 };
+function spiralAt(t){
+  const th = t * SPIRAL.thMax;
+  const r = SPIRAL.r0 * Math.exp(SPIRAL.b * th);
+  return { th, r, x: cx + r * Math.cos(th - Math.PI / 2), y: cy + r * Math.sin(th - Math.PI / 2) };
+}
+const frac = (x) => x - Math.floor(x);
+function layoutParade(){
+  const w = state.tick / STREAM.tOne;
+  const gen = Math.floor(w);
+  const ph = w - gen;
+  const fades = state.playing || !state.reduced;
+  for (let d = 0; d < 21; d++){
+    const el = state.parade[d];
+    const p = (d + ph) / 21;
+    const r = STREAM.r0 + p * STREAM.L / STREAM.C;
+    const th = Math.log(r / SPIRAL.r0) / SPIRAL.b;
+    const li = ((gen - d) % 21 + 21) % 21;
+    el.L = LETRAS[1 + li];
+    el.i = li;
+    el.hue = Math.round(li * 360 / 21);
+    el.x = cx + r * Math.cos(th - Math.PI / 2);
+    el.y = cy + r * Math.sin(th - Math.PI / 2);
+    el.r = Math.max(9, Math.min(30, r * 0.16));
+    el.p = p;
+    if (fades){
+      const cl = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
+      const s = (x) => { x = cl(x); return x * x * (3 - 2 * x); };
+      el.alpha = cl(p / 0.06) * (1 - s((p - 0.80) / 0.20));
+    } else el.alpha = 1;
+  }
+}
+
+function build(){
+  const R = RMAX;
+  SPIRAL.r0 = R * 0.085;
+  SPIRAL.rout = R * 1.32;
+  SPIRAL.thMax = 5.5 * TAU;
+  SPIRAL.b = Math.log(SPIRAL.rout / SPIRAL.r0) / SPIRAL.thMax;
+  STREAM.C = Math.sqrt(1 + SPIRAL.b * SPIRAL.b) / SPIRAL.b;
+  STREAM.r0 = R * 0.137;
+  STREAM.rEnd = R * 0.98;
+  STREAM.L = STREAM.C * (STREAM.rEnd - STREAM.r0);
+  STREAM.tOne = STREAM.L / 1785;
+  state.camD = R * 4.6;
+  state.camF = S * 1.93;
+
+  state.parade = Array.from({ length: 21 }, () => ({ L: 'א', i: 0, hue: 0, x: 0, y: 0, r: 12, alpha: 1, p: 0 }));
+
+  state.rings = RING_LEVELS.map((k, idx) => {
+    const L = NIVELES[k];
+    const n = Number(L.value);
+    const count = Math.min(n, state.cap);
+    return { k, n, count, r: R * RADII[idx], hue: L.hue, sampled: n > state.cap, step: TAU / n };
+  });
+
+  state.sparks = Array.from({length: 84}, (_, i) => ({
+    t: i / 84, sp: 0.06 + (i % 7) * 0.011, sz: 0.7 + (i % 5) * 0.45, al: 0.35 + (i % 4) * 0.16
+  }));
+
+  drawLayer();
+  drawLegend();
+}
+
+function drawLayer(){
+  const R = RMAX;
+  lctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  lctx.clearRect(0, 0, S, S);
+
+  const g = lctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+  g.addColorStop(0, 'rgba(240,180,41,.10)');
+  g.addColorStop(.45, 'rgba(88,166,255,.045)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  lctx.fillStyle = g;
+  lctx.fillRect(0, 0, S, S);
+
+  const THREAD = [[0, 1, .015], [0, .5, .10], [0, .26, .22]];
+  THREAD.forEach(([t0, t1, al]) => {
+    lctx.beginPath();
+    const N = Math.max(64, Math.ceil((t1 - t0) * 900));
+    for (let i = 0; i <= N; i++){
+      const t = t0 + (t1 - t0) * i / N;
+      const p = spiralAt(t);
+      if (i === 0) lctx.moveTo(p.x, p.y); else lctx.lineTo(p.x, p.y);
+    }
+    lctx.strokeStyle = 'rgba(240,180,41,' + al + ')';
+    lctx.lineWidth = Math.max(1, S * 0.0022);
+    lctx.stroke();
+  });
+
+  state.sparks.forEach((s) => {
+    const p = spiralAt(s.t);
+    lctx.beginPath();
+    lctx.arc(p.x, p.y, s.sz * (S / 460), 0, TAU);
+    lctx.fillStyle = 'rgba(255,214,140,.4)';
+    lctx.fill();
+  });
+
+  state.rings.forEach((ring) => {
+    lctx.beginPath();
+    lctx.arc(cx, cy, ring.r, 0, TAU);
+    lctx.strokeStyle = 'hsla(' + ring.hue + ',70%,60%,.10)';
+    lctx.lineWidth = 1;
+    lctx.stroke();
+
+    const dr = Math.max(1.05, S * 0.0028);
+    lctx.beginPath();
+    for (let i = 0; i < ring.count; i++){
+      const idx = ring.sampled ? Math.floor(i * ring.n / ring.count) : i;
+      const a = -Math.PI / 2 + idx * ring.step;
+      const x = cx + ring.r * Math.cos(a);
+      const y = cy + ring.r * Math.sin(a);
+      lctx.moveTo(x + dr, y);
+      lctx.arc(x, y, dr, 0, TAU);
+    }
+    lctx.fillStyle = 'hsla(' + ring.hue + ',85%,62%,.82)';
+    lctx.fill();
+  });
+}
+
+function toScreen(x, y){
+  const cs = Math.cos(state.rotation), sn = Math.sin(state.rotation);
+  const dx = x - cx, dy = y - cy;
+  return { x: cx + dx * cs - dy * sn, y: cy + dx * sn + dy * cs };
+}
+
+function ringAt(lx, ly){
+  const r = Math.hypot(lx - cx, ly - cy);
+  let best = null, bd = 1e9;
+  state.rings.forEach((ring) => {
+    const d = Math.abs(r - ring.r);
+    if (d < Math.max(11, RMAX * 0.042) && d < bd){ bd = d; best = ring; }
+  });
+  return best;
+}
+
+function nodeAt(lx, ly){
+  let best = null, bd = 1e9;
+  for (const n of state.parade){
+    const d = Math.hypot(lx - n.x, ly - n.y);
+    if (d < Math.max(n.r * 1.3, 10) && d < bd){ bd = d; best = n; }
+  }
+  return best;
+}
+
+/* ---------- 3D ---------- */
+function rzOf(r){ return state.dish * (1 - Math.min(1, r / RMAX)) * RMAX; }
+function cam3D(dx, dy){
+  const ca = Math.cos(state.camA), sa = Math.sin(state.camA);
+  const cp = Math.cos(state.camP), sp = Math.sin(state.camP);
+  const X1 = dx * ca - dy * sa;
+  const Y1 = dx * sa + dy * ca;
+  const rz = rzOf(Math.hypot(dx, dy));
+  const Z2 = Y1 * sp + rz * cp;
+  const Y2 = Y1 * cp - rz * sp;
+  const m = state.camF / (state.camD - Z2);
+  return { x: cx + X1 * m, y: cy + Y2 * m, m, z: Z2 };
+}
+function nodeAt3D(lx, ly){
+  let best = null, bd = 1e9;
+  for (const n of state.parade){
+    if (n._sx == null) continue;
+    const d = Math.hypot(lx - n._sx, ly - n._sy);
+    const hit = Math.max((n.r * n._m) * 1.45, 12);
+    if (d < hit && d < bd){ bd = d; best = n; }
+  }
+  return best;
+}
+function render3D(){
+  const R = RMAX;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.clearRect(0, 0, S, S);
+  layoutParade();
+
+  const c0 = cam3D(0, 0);
+  const bg = ctx.createRadialGradient(c0.x, c0.y, 0, c0.x, c0.y, R * c0.m);
+  bg.addColorStop(0, 'rgba(240,180,41,.10)');
+  bg.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, S, S);
+
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  const NT = 320;
+  [[R * 0.006, .05], [Math.max(1, S * 0.0022), .16]].forEach(([lw, al]) => {
+    ctx.beginPath();
+    for (let i = 0; i <= NT; i++){
+      const p = spiralAt(i / NT);
+      const q = cam3D(p.x - cx, p.y - cy);
+      if (i === 0) ctx.moveTo(q.x, q.y); else ctx.lineTo(q.x, q.y);
+    }
+    ctx.strokeStyle = 'rgba(240,180,41,' + al + ')';
+    ctx.lineWidth = lw;
+    ctx.stroke();
+  });
+
+  const items = [];
+  const dr = Math.max(1.05, S * 0.0028);
+
+  state.rings.forEach((ring) => {
+    const r = ring.r;
+    let zsum = 0;
+    [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(([ux, uy]) => { zsum += cam3D(ux * r, uy * r).z; });
+    const on = ring.k === state.selected;
+    items.push({
+      z: zsum / 4,
+      paint: () => {
+        ctx.beginPath();
+        const N = 110;
+        for (let i = 0; i <= N; i++){
+          const a = -Math.PI / 2 + i / N * TAU;
+          const q = cam3D(Math.cos(a) * r, Math.sin(a) * r);
+          if (i === 0) ctx.moveTo(q.x, q.y); else ctx.lineTo(q.x, q.y);
+        }
+        ctx.strokeStyle = on ? 'hsla(' + ring.hue + ',85%,66%,.55)' : 'hsla(' + ring.hue + ',70%,60%,.13)';
+        ctx.lineWidth = on ? Math.max(2, S * 0.004) : 1;
+        ctx.stroke();
+        for (let i = 0; i < ring.count; i++){
+          const idx = ring.sampled ? Math.floor(i * ring.n / ring.count) : i;
+          const a = -Math.PI / 2 + idx * ring.step;
+          const q = cam3D(Math.cos(a) * r, Math.sin(a) * r);
+          const rad = dr * q.m;
+          ctx.beginPath();
+          ctx.arc(q.x, q.y, Math.max(0.4, rad), 0, TAU);
+          ctx.fillStyle = 'hsla(' + ring.hue + ',85%,62%,.78)';
+          ctx.fill();
+        }
+      }
+    });
+  });
+
+  state.sparks.forEach((s) => {
+    const p = spiralAt(s.t);
+    const q = cam3D(p.x - cx, p.y - cy);
+    items.push({
+      z: q.z,
+      paint: () => {
+        ctx.beginPath();
+        ctx.arc(q.x, q.y, s.sz * (S / 460) * q.m, 0, TAU);
+        ctx.fillStyle = 'rgba(255,214,140,' + s.al + ')';
+        ctx.fill();
+      }
+    });
+  });
+
+  let zmin = 1e9, zmax = -1e9;
+  state.parade.forEach((n) => {
+    const q = cam3D(n.x - cx, n.y - cy);
+    n._sx = q.x; n._sy = q.y; n._m = q.m; n._z = q.z;
+    zmin = Math.min(zmin, q.z); zmax = Math.max(zmax, q.z);
+  });
+  const zspan = Math.max(1e-6, zmax - zmin);
+  const isLetterOn = state.selected === 1 || state.hover === 1;
+
+  state.parade.forEach((n) => {
+    const q = { x: n._sx, y: n._sy, m: n._m, z: n._z };
+    items.push({
+      z: q.z,
+      paint: () => {
+        const k = n.r * q.m;
+        const fog = 0.42 + 0.58 * (q.z - zmin) / zspan;
+        const alpha = clamp01(n.alpha * 2) * fog;
+        if (alpha <= 0.015) return;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        if (isLetterOn){
+          ctx.beginPath();
+          ctx.arc(q.x, q.y, k * (1.18 + 0.05 * Math.sin(state.t * 4 + n.i)), 0, TAU);
+          ctx.strokeStyle = 'rgba(255,255,255,.4)';
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        }
+        const ng = ctx.createRadialGradient(q.x - k * .3, q.y - k * .3, k * .1, q.x, q.y, k);
+        ng.addColorStop(0, 'hsla(' + n.hue + ',95%,76%,1)');
+        ng.addColorStop(1, 'hsla(' + n.hue + ',80%,46%,1)');
+        ctx.beginPath();
+        ctx.arc(q.x, q.y, k, 0, TAU);
+        ctx.fillStyle = ng;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,.8)';
+        ctx.lineWidth = Math.max(1, S * 0.0016);
+        ctx.stroke();
+        ctx.fillStyle = '#fff';
+        ctx.font = '600 ' + (k * 0.95) + 'px ' + '"Segoe UI Historic","Arial Hebrew",David,serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(n.L, q.x, q.y + k * 0.06);
+        ctx.restore();
+      }
+    });
+  });
+
+  items.push({
+    z: c0.z,
+    paint: () => {
+      const pulse = 1 + 0.035 * Math.sin(state.t * 2.1);
+      const coreR = R * 0.085;
+      const k = coreR * c0.m * pulse;
+      const cg = ctx.createRadialGradient(c0.x, c0.y, k * .2, c0.x, c0.y, k * 3.4 * pulse);
+      cg.addColorStop(0, 'rgba(240,180,41,.5)');
+      cg.addColorStop(1, 'rgba(240,180,41,0)');
+      ctx.beginPath();
+      ctx.arc(c0.x, c0.y, k * 3.4 * pulse, 0, TAU);
+      ctx.fillStyle = cg;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(c0.x, c0.y, k, 0, TAU);
+      const ag = ctx.createRadialGradient(c0.x - k * .3, c0.y - k * .3, k * .1, c0.x, c0.y, k);
+      ag.addColorStop(0, '#fff3cd');
+      ag.addColorStop(.55, '#f0b429');
+      ag.addColorStop(1, '#a9740a');
+      ctx.fillStyle = ag;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.9)';
+      ctx.lineWidth = Math.max(1.6, S * 0.0028);
+      ctx.stroke();
+      ctx.fillStyle = '#12161f';
+      ctx.font = '700 ' + Math.max(15, S * 0.058) * c0.m + 'px "Segoe UI Historic","Arial Hebrew",David,serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('א', c0.x, c0.y + k * 0.06);
+    }
+  });
+
+  items.sort((a, b) => a.z - b.z);
+  items.forEach((it) => it.paint());
+}
+
+function render(){
+  if (state.view3d){ render3D(); return; }
+  const R = RMAX;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.clearRect(0, 0, S, S);
+
+  const intro = easeOutCubic(clamp01(state.intro));
+  const rot = state.rotation;
+
+  layoutParade();
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(rot);
+  ctx.translate(-cx, -cy);
+
+  if (intro < 0.999){
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * intro + 1, 0, TAU);
+    ctx.clip();
+  }
+  ctx.drawImage(layer, 0, 0, S, S);
+
+  const selK = state.selected;
+  const hovK = state.hover;
+
+  state.rings.forEach((ring) => {
+    const isSel = ring.k === selK;
+    const isHov = ring.k === hovK;
+    if (!isSel && !isHov) return;
+    ctx.beginPath();
+    ctx.arc(cx, cy, ring.r, 0, TAU);
+    ctx.strokeStyle = isSel
+      ? 'hsla(' + ring.hue + ',95%,70%,' + (0.55 + 0.3 * Math.sin(state.t * 4)) + ')'
+      : 'hsla(' + ring.hue + ',90%,70%,.5)';
+    ctx.lineWidth = isSel ? Math.max(2, S * 0.005) : Math.max(1.4, S * 0.003);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, cy, ring.r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 0.32);
+    ctx.strokeStyle = 'rgba(255,255,255,.85)';
+    ctx.lineWidth = Math.max(1.6, S * 0.0042);
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    ctx.lineCap = 'butt';
+  });
+
+  for (const s of state.sparks){
+    const p = spiralAt(s.t);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, s.sz * (S / 460), 0, TAU);
+    ctx.fillStyle = 'rgba(255,214,140,' + s.al + ')';
+    ctx.fill();
+    if (state.intro < 1 && p.r / R < intro * 1.02) s.t = (s.t + 0.004) % 1;
+  }
+
+  if (intro < 0.999) ctx.restore();
+
+  ctx.restore();
+
+  state.parade.forEach((n, idx) => {
+    const s = toScreen(n.x, n.y);
+    const k = n.r;
+    const isSel = state.selected === 1;
+    const isHov = state.hover === 1;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, n.alpha * 2));
+    if (n.alpha >= 0.02 && (isSel || isHov)){
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, k * (1.18 + 0.05 * Math.sin(state.t * 4 + idx)), 0, TAU);
+      ctx.strokeStyle = 'rgba(255,255,255,.35)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+    const ng = ctx.createRadialGradient(s.x - k * .3, s.y - k * .3, k * .1, s.x, s.y, k);
+    ng.addColorStop(0, 'hsla(' + n.hue + ',95%,76%,1)');
+    ng.addColorStop(1, 'hsla(' + n.hue + ',80%,46%,1)');
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, k, 0, TAU);
+    ctx.fillStyle = ng;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.8)';
+    ctx.lineWidth = Math.max(1, S * 0.0016);
+    ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.font = '600 ' + (k * 0.95) + 'px ' + '"Segoe UI Historic","Arial Hebrew",David,serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(n.L, s.x, s.y + k * 0.06);
+    ctx.restore();
+  });
+
+  state.rings.forEach((ring, idx) => {
+    const next = state.rings[idx + 1];
+    const lr = next
+      ? (ring.r + next.r) / 2
+      : Math.min(R - 10, ring.r + 14);
+    const p = toScreen(cx + lr, cy);
+    const on = ring.k === state.selected || ring.k === state.hover;
+    ctx.save();
+    ctx.font = '600 ' + Math.max(8.5, S * 0.0205) + 'px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    const txt = 'N' + ring.k;
+    const w = ctx.measureText(txt).width;
+    ctx.fillStyle = on ? 'rgba(8,11,18,.95)' : 'rgba(8,11,18,.66)';
+    ctx.beginPath();
+    ctx.roundRect(p.x + 4, p.y - 8, w + 12, 16, 8);
+    ctx.fill();
+    ctx.strokeStyle = on ? 'hsla(' + ring.hue + ',90%,70%,.85)' : 'hsla(' + ring.hue + ',60%,60%,.28)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = on ? 'hsl(' + ring.hue + ',90%,70%)' : 'hsla(' + ring.hue + ',70%,68%,.72)';
+    ctx.fillText(txt, p.x + 10, p.y + 0.5);
+    ctx.restore();
+  });
+
+  const coreR = R * 0.085;
+  const pulse = 1 + 0.035 * Math.sin(state.t * 2.1);
+  const cg = ctx.createRadialGradient(cx, cy, coreR * 0.2, cx, cy, coreR * 3.4 * pulse);
+  cg.addColorStop(0, 'rgba(240,180,41,.5)');
+  cg.addColorStop(1, 'rgba(240,180,41,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreR * 3.4 * pulse, 0, TAU);
+  ctx.fillStyle = cg;
+  ctx.fill();
+
+  for (let i = state.waves.length - 1; i >= 0; i--){
+    const w = state.waves[i];
+    w.a += 0.011 * state.speed;
+    w.r += 2.6 * state.speed;
+    if (w.a <= 0 || w.r > R){ state.waves.splice(i, 1); continue; }
+    ctx.beginPath();
+    ctx.arc(cx, cy, w.r, 0, TAU);
+    ctx.strokeStyle = 'rgba(240,180,41,' + (w.a * 0.5).toFixed(3) + ')';
+    ctx.lineWidth = Math.max(1, S * 0.003) * w.a;
+    ctx.stroke();
+  }
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreR * pulse, 0, TAU);
+  const ag = ctx.createRadialGradient(cx - coreR * .3, cy - coreR * .3, coreR * .1, cx, cy, coreR);
+  ag.addColorStop(0, '#fff3cd');
+  ag.addColorStop(.55, '#f0b429');
+  ag.addColorStop(1, '#a9740a');
+  ctx.fillStyle = ag;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.9)';
+  ctx.lineWidth = Math.max(1.6, S * 0.0028);
+  ctx.stroke();
+  ctx.fillStyle = '#12161f';
+  ctx.font = '700 ' + Math.max(15, S * 0.058) + 'px "Segoe UI Historic","Arial Hebrew",David,serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('א', cx, cy + coreR * 0.06);
+}
+const clamp01 = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
+
+function drawLegend(){
+  const host = $('#legend');
+  host.innerHTML = '';
+  const rows = [{k:1, n:21, count:21, hue:Math.round(360 / 21), sampled:false, letra:true}].concat(
+    state.rings.map((r) => ({k:r.k, n:r.n, count:r.count, hue:r.hue, sampled:r.sampled, letra:false}))
+  );
+  rows.forEach((r) => {
+    const el = document.createElement('div');
+    el.className = 'lg';
+    el.dataset.k = r.k;
+    el.style.setProperty('--tintc', 'hsl(' + r.hue + ',85%,62%)');
+    const rate = r.sampled
+      ? 'muestreado 1 de ' + Math.round(r.n / r.count).toLocaleString('es-MX')
+      : (r.letra ? '21 letras · flujo' : 'exactos');
+    el.innerHTML = '<i style="background:hsl(' + r.hue + ',85%,62%);color:hsl(' + r.hue + ',85%,62%)"></i>' +
+      '<span>N' + r.k + ' · <span class="n">' + fmt(String(r.n)) + '</span></span>' +
+      '<span class="s">' + rate + '</span>';
+    el.addEventListener('click', () => select(r.k, true));
+    el.addEventListener('pointerenter', () => { state.hover = r.k; dirty = true; });
+    el.addEventListener('pointerleave', () => { if (state.hover === r.k){ state.hover = null; dirty = true; } hideTip(); });
+    host.appendChild(el);
+  });
+  markLegend();
+}
+
+function markLegend(){
+  document.querySelectorAll('#legend .lg').forEach((el) => {
+    el.classList.toggle('act', +el.dataset.k === state.selected);
+  });
+}
+
+function updatePanel(){
+  const L = NIVELES[state.selected];
+  const hue = L.hue;
+  const panel = $('#panel');
+  panel.style.setProperty('--pc', 'hsl(' + hue + ',85%,64%)');
+  $('#pNum').textContent = String(L.k);
+  $('#pHeb').textContent = L.letra;
+  $('#pTag').textContent = L.k === 0 ? 'origen' : L.k === NIVEL_MAX ? '21! · fin' : 'nivel ' + L.k;
+
+  const prev = L.k > 0 ? NIVELES[L.k - 1].value : null;
+  const rows = [
+    ['Letra', '<span class="heb" style="font-size:1.3em">' + L.letra + '</span> <span class="muted">= ' + L.gv + '</span>'],
+    ['Longitud', String(L.k) + ' ' + (L.k === 0 ? '(sola)' : L.k === 1 ? '(letra)' : 'letras')],
+    ['Fórmula', '<span class="mono">' + L.formula + '</span>'],
+    ['Configuraciones', '<span class="num">' + fmt(L.digits) + '</span>'],
+    ['Gematría', '<span class="gem">' + L.gem + '</span> <span class="muted">' + Array(L.digits).join(' + ').slice(0, 46) + (L.digits.length > 24 ? '…' : '') + '</span>'],
+    L.k > 0 ? ['Factor vs. N' + (L.k - 1), '<span class="mono">× ' + (22 - L.k) + '</span>'] : ['Nivel', '<span class="mono">semilla</span>'],
+    ['Cota del anillo', L.k === 0 ? 'centro א' : L.k === 1 ? 'flujo infinito' : L.k <= 6 ? 'anillo N' + L.k : 'fuera del dibujo']
+  ];
+  if (prev !== null){
+    const ratio = (L.value / prev).toString();
+    rows.splice(5, 0, ['Cociente exacto', '<span class="mono">' + ratio + '</span>']);
+  }
+  const kv = $('#pKv');
+  kv.classList.remove('fade-swap');
+  kv.innerHTML = rows.map(([a, b]) => '<div><span>' + a + '</span><b>' + b + '</b></div>').join('');
+  void kv.offsetWidth;
+  kv.classList.add('fade-swap');
+}
+
+let scrollLock = false;
+function select(k, fromTable){
+  state.selected = k;
+  dirty = true;
+  updatePanel();
+  markLegend();
+  document.querySelectorAll('#tabla tbody tr').forEach((tr) => {
+    tr.classList.toggle('act', +tr.dataset.k === k);
+  });
+  if (fromTable && !scrollLock){
+    const tr = document.querySelector('#tabla tbody tr[data-k="' + k + '"]');
+    if (tr) tr.scrollIntoView({ block: 'nearest', behavior: state.reduced ? 'auto' : 'smooth' });
+  }
+  state.waves.push({ r: RMAX * 0.06, a: 0.85 });
+}
+
+canvas.addEventListener('pointermove', (e) => {
+  const b = canvas.getBoundingClientRect();
+  const sx = (e.clientX - b.left) * (S / b.width);
+  const sy = (e.clientY - b.top) * (S / b.height);
+  if (state.view3d){
+    if (state.dragging){
+      const dx = e.clientX - state.dragX, dy = e.clientY - state.dragY;
+      state.dragX = e.clientX; state.dragY = e.clientY;
+      state.camA += dx * 0.006;
+      state.camP = Math.max(0.05, Math.min(1.25, state.camP + dy * 0.004));
+      if (Math.abs(dx) + Math.abs(dy) > 2) state.dragMoved = true;
+      dirty = true;
+      return;
+    }
+    const n = nodeAt3D(sx, sy);
+    if (n){
+      if (state.hover !== 1){ state.hover = 1; dirty = true; }
+      showTip(canvas, '<span class="heb">' + LETRAS[0] + ' → ' + n.L + '</span> · <b>' + (GVAL[0] + GVAL[n.i + 1]) + '</b> <span class="muted">nivel 1 · 21 letras</span>');
+      canvas.style.cursor = 'pointer';
+      return;
+    }
+    if (state.hover !== null){ state.hover = null; dirty = true; }
+    canvas.style.cursor = 'grab';
+    hideTip();
+    return;
+  }
+  const cs = Math.cos(-state.rotation), sn = Math.sin(-state.rotation);
+  const dx = sx - cx, dy = sy - cy;
+  const lx = cx + dx * cs - dy * sn;
+  const ly = cy + dx * sn + dy * cs;
+
+  const n = nodeAt(lx, ly);
+  if (n){
+    if (state.hover !== 1){ state.hover = 1; dirty = true; }
+    showTip(canvas, '<span class="heb">' + LETRAS[0] + ' → ' + n.L + '</span> · <b>' + (GVAL[0] + GVAL[n.i + 1]) + '</b> <span class="muted">nivel 1 · 21 letras</span>');
+    canvas.style.cursor = 'pointer';
+    return;
+  }
+  const r = ringAt(lx, ly);
+  if (r){
+    if (state.hover !== r.k){ state.hover = r.k; dirty = true; }
+    const L = NIVELES[r.k];
+    showTip(canvas, '<span class="heb">' + L.letra + '</span> <b>N' + r.k + '</b> · ' + fmt(L.digits) + ' <span class="muted">→ ' + L.gem + '</span>');
+    canvas.style.cursor = 'pointer';
+    return;
+  }
+  if (state.hover !== null){ state.hover = null; dirty = true; }
+  canvas.style.cursor = 'crosshair';
+  hideTip();
+});
+canvas.addEventListener('pointerleave', () => { state.hover = null; state.dragging = false; dirty = true; hideTip(); });
+canvas.addEventListener('pointerdown', (e) => {
+  if (!state.view3d) return;
+  state.dragging = true; state.dragMoved = false;
+  state.dragX = e.clientX; state.dragY = e.clientY;
+  canvas.setPointerCapture(e.pointerId);
+  canvas.style.cursor = 'grabbing';
+});
+canvas.addEventListener('pointerup', (e) => {
+  if (!state.view3d) return;
+  state.dragging = false;
+  canvas.style.cursor = 'grab';
+  try { canvas.releasePointerCapture(e.pointerId); } catch(_){}
+});
+canvas.addEventListener('click', () => {
+  if (state.view3d && state.dragMoved) return;
+  if (state.hover !== null) select(state.hover, false);
+});
+
+/* ---------- Controles ---------- */
+const btnPlay = $('#btnPlay'), playIc = $('#playIc'), playTx = $('#playTx');
+function paintPlay(){
+  playIc.textContent = state.playing ? '❚❚' : '▶';
+  playTx.textContent = state.playing ? 'Pausar' : 'Animar';
+  btnPlay.setAttribute('aria-pressed', String(state.playing));
+  btnPlay.classList.toggle('on', !state.playing);
+  if (!state.playing){
+    const dots = 21 + state.rings.reduce((a, r) => a + r.count, 0);
+    $('#perf').textContent = 'en pausa · ' + fmt(String(dots)) + ' puntos';
+  }
+}
+btnPlay.addEventListener('click', () => { state.playing = !state.playing; paintPlay(); state.last = performance.now(); dirty = true; });
+
+$('#btnReplay').addEventListener('click', () => {
+  state.intro = state.reduced ? 1 : 0;
+  state.tick = 0;
+  state.waves.length = 0;
+  state.rotation = 0;
+  state.camA = 0.62;
+  state.camP = 0.55;
+  dirty = true;
+});
+
+const btn3d = $('#btn3d'), v3Tx = $('#v3Tx');
+btn3d.addEventListener('click', () => {
+  state.view3d = !state.view3d;
+  btn3d.classList.toggle('on', state.view3d);
+  btn3d.setAttribute('aria-pressed', String(state.view3d));
+  v3Tx.textContent = state.view3d ? '2D' : '3D';
+  state.hover = null;
+  hideTip();
+  dirty = true;
+});
+
+const btnRot = $('#btnRot');
+btnRot.addEventListener('click', () => {
+  state.rotate = !state.rotate;
+  btnRot.classList.toggle('on', state.rotate);
+  btnRot.setAttribute('aria-pressed', String(state.rotate));
+  dirty = true;
+});
+
+$('#spd').addEventListener('input', (e) => { state.speed = (+e.target.value) / 100; });
+$('#dens').addEventListener('change', (e) => { state.cap = +e.target.value; build(); drawLegend(); markLegend(); dirty = true; });
+
+/* ---------- Loop ---------- */
+let waveClock = 0, perfClock = 0, fpsAcc = 0, fpsN = 0, dirty = true;
+const perfEl = $('#perf');
+function markDirty(){ dirty = true; }
+
+function frame(now){
+  const dt = Math.min(0.05, Math.max(0, (now - state.last) / 1000));
+  state.last = now;
+
+  if (state.playing){
+    state.t += dt;
+    state.tick += dt * state.speed;
+    if (state.intro < 1) state.intro = Math.max(0, Math.min(1, state.intro + dt / 2.6));
+    if (state.view3d){
+      if (!state.dragging) state.camA += dt * 0.10 * state.speed;
+    } else if (state.rotate){
+      state.rotation += dt * 0.085 * state.speed;
+    }
+    for (const s of state.sparks) s.t = (s.t + dt * s.sp * state.speed) % 1;
+    waveClock += dt * state.speed;
+    if (waveClock > 2.6){ waveClock = 0; if (state.intro > .9) state.waves.push({ r: RMAX * 0.09, a: 0.8 }); }
+    fpsAcc += dt; fpsN++;
+    if (state.t - perfClock > 0.5){
+      perfClock = state.t;
+      const dots = 21 + state.rings.reduce((a, r) => a + r.count, 0);
+      perfEl.textContent = (fpsN / fpsAcc).toFixed(0) + ' fps · ' + fmt(String(dots)) + ' puntos' + (state.view3d ? ' · 3D' : '');
+      fpsAcc = 0; fpsN = 0;
+    }
+    dirty = true;
+  }
+
+  if (dirty){ render(); dirty = false; }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- Reveal / observers ---------- */
+function observeReveals(){
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.14 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  const tro = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const tr = e.target;
+      requestAnimationFrame(() => { tr.classList.add('shown', 'go'); });
+      tro.unobserve(tr);
+    });
+  }, { threshold: 0.35 });
+  document.querySelectorAll('#tabla tbody tr').forEach((tr) => tro.observe(tr));
+
+  const dc = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const total = +el.dataset.total;
+      const t0 = performance.now();
+      const dur = state.reduced ? 1 : 1400;
+      (function step(now){
+        const p = Math.min(1, (now - t0) / dur);
+        el.textContent = String(Math.round(easeOutCubic(p) * total));
+        if (p < 1) requestAnimationFrame(step);
+      })(t0);
+      dc.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  dc.observe($('#doorCount'));
+}
+
+const ro = new ResizeObserver(() => { layout(); });
+ro.observe(canvas.parentElement);
+window.addEventListener('resize', () => { layout(); });
+
+layout();
+paintPlay();
+select(21, false);
+updatePanel();
+observeReveals();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
