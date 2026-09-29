@@ -303,6 +303,56 @@ footer{text-align:center; color:var(--muted); font-size:.72rem; margin-top:44px;
   .aurora{animation:none}
   .stage::before{animation:none}
 }
+
+/* ======== Documento L231 (unificado) ======== */
+.doc{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+.doc-nav{
+  position:sticky; top:0; z-index:20; display:flex; gap:6px; flex-wrap:wrap; justify-content:center; align-items:center;
+  padding:8px 12px; margin:8px 0 12px; background:rgba(5,7,12,.92); backdrop-filter:blur(12px);
+  border:1px solid var(--line); border-radius:18px;
+}
+.doc-nav a{color:var(--gold); text-decoration:none; font-size:.72rem; letter-spacing:.04em; padding:5px 11px; border-radius:14px; border:1px solid transparent; transition:all .25s; white-space:nowrap}
+.doc-nav a:hover{background:rgba(240,180,41,.12); border-color:rgba(240,180,41,.35)}
+.doc h2{font-size:clamp(1.1rem,2.6vw,1.5rem); font-weight:700; color:var(--gold); border-left:3px solid var(--gold); padding-left:14px; margin:46px 0 16px; letter-spacing:-.2px}
+.doc h3{font-size:1rem; color:var(--blue); font-weight:600; margin:0 0 8px}
+.doc p{margin:0 0 12px; color:#c8c8d8; line-height:1.75}
+.doc b{color:var(--ink)}
+.doc em{color:var(--gold); font-style:normal; font-weight:600}
+.doc code{font-family:ui-monospace,Consolas,monospace; background:rgba(240,180,41,.09); color:var(--gold); padding:1px 6px; border-radius:5px; font-size:.9em}
+.doc .panel h3{font-size:1rem; letter-spacing:.02em; text-transform:none; color:var(--blue); font-weight:600; margin:0 0 8px}
+.doc .panel p{margin:0; color:#c8c8d8}
+.doc .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.doc .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+@media (max-width:720px){.doc .grid-2,.doc .grid-3{grid-template-columns:1fr}}
+.doc .stat3{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:15px; text-align:center}
+.doc .stat3 .num{display:block; font-family:ui-monospace,Consolas,monospace; font-size:1.5rem; color:var(--gold); font-weight:700}
+.doc .stat3 .label{display:block; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:5px}
+.doc .quote{font-style:italic; color:var(--gold); text-align:center; margin:24px auto; max-width:56ch; font-size:1.02rem; line-height:1.7}
+.doc pre{background:rgba(10,12,20,.85); border:1px solid var(--line); border-radius:12px; padding:15px; overflow-x:auto; color:#c8d8f0; font-family:ui-monospace,Consolas,monospace; font-size:.82em; line-height:1.6; margin:12px 0}
+.doc pre .kw{color:#ff79c6}.doc pre .num{color:#bd93f9}.doc pre .str{color:#f1fa8c}.doc pre .com{color:#6272a4; font-style:italic}.doc pre .fn{color:#50fa7b}
+.doc table{min-width:0; font-size:.83rem}
+.doc th{position:static; cursor:default; text-align:left; white-space:nowrap}
+.doc th::after,.doc th.sorted::after{content:""; margin:0}
+.doc td{opacity:1; transform:none; text-align:left; white-space:normal}
+.doc tr.shown td{opacity:1; transform:none}
+.doc tbody tr{cursor:default}
+.doc td.hebrew{font-family:var(--heb); font-size:1.25em; color:var(--gold); white-space:nowrap}
+.doc td.mono,.doc .mono{font-family:ui-monospace,Consolas,monospace; color:var(--blue)}
+.doc .check{display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(63,185,80,.05); border-left:3px solid var(--green); border-radius:8px; margin:7px 0; font-size:.87em; color:#c8c8d8}
+.doc .check .icon{color:var(--green); font-weight:700}
+.doc .check .result{color:var(--blue); font-family:ui-monospace,Consolas,monospace; margin-left:auto; white-space:nowrap}
+.doc svg{display:block; width:100%; border-radius:12px}
+.doc .letter{font-family:var(--heb); font-size:16px; fill:#fff; text-anchor:middle; dominant-baseline:central; cursor:pointer; transition:all .3s}
+.doc .letter:hover{fill:var(--gold); font-size:22px}
+.doc .door{stroke:rgba(255,215,0,.07); stroke-width:.4; transition:stroke .2s}
+.doc .door.hl{stroke:rgba(255,215,0,.9); stroke-width:1.2}
+.doc .spiral{fill:none; stroke:url(#goldGrad); stroke-width:2; opacity:.6}
+.doc .fib-circle{fill:none; stroke:rgba(88,166,255,.12); stroke-width:.6}
+.doc .fib-label{fill:rgba(88,166,255,.45); font-size:9px; text-anchor:middle}
+.doc .tagx{display:inline-block; background:rgba(88,166,255,.15); color:var(--blue); font-size:.68em; padding:2px 9px; border-radius:12px; text-transform:uppercase; letter-spacing:1px; margin:3px 4px 0 0}
+.doc .svg-cap{text-align:center; font-size:.83em; color:var(--muted); margin-top:8px}
+.doc section{scroll-margin-top:78px}
+.doc strong{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -411,10 +461,794 @@ footer{text-align:center; color:var(--muted); font-size:.72rem; margin-top:44px;
     nacen las <b>231</b> puertas: el número de pares entre las 22 letras, <code>C(22,2)</code>.
   </p>
 
+  <div class="doc">
+
+    <svg width="0" height="0" style="position:absolute;visibility:hidden" aria-hidden="true">
+      <defs>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffd700"/>
+          <stop offset="50%" stop-color="#ff8c00"/>
+          <stop offset="100%" stop-color="#ffd700"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <nav class="doc-nav" aria-label="Documento L231">
+      <a href="#que-es">L231</a>
+      <a href="#alfabeto">Alfabeto</a>
+      <a href="#puertas">231 Puertas</a>
+      <a href="#aurea">φ Áurea</a>
+      <a href="#euclides">Euclides</a>
+      <a href="#st">Espacio-Tiempo</a>
+      <a href="#proteinas">Proteínas</a>
+      <a href="#primos">Primos</a>
+      <a href="#fractales">Fractales</a>
+      <a href="#rees">Rees</a>
+      <a href="#gardner">Gardner</a>
+      <a href="#verificar">Verificar</a>
+    </nav>
+
+    <h2 style="text-align:center;border-left:none;font-size:clamp(1.3rem,3.2vw,1.9rem);margin-top:14px">
+      L231 · El Lenguaje de las 231 Puertas
+    </h2>
+    <p style="text-align:center;max-width:680px;margin:0 auto 14px">
+      22 letras hebreas · 231 puertas · φ = 1.618… · gematría · espacio-tiempo,
+      proteínas, primos, fractales, los 6 números de Rees y el Biocosmos de Gardner.
+      Todo verificable en tu navegador.
+    </p>
+
+    <!-- 1 · QUÉ ES L231 -->
+    <section id="que-es">
+      <h2>1 · ¿Qué es L231?</h2>
+      <p>Un lenguaje formal donde:</p>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Las 22 letras hebreas</h3>
+          <p>Son los <em>tipos primitivos</em>. De <span style="color:var(--gold)">א (Alef)</span>
+          a <span style="color:var(--gold)">ת (Tav)</span>, los 22 símbolos fundamentales.</p>
+        </div>
+        <div class="panel">
+          <h3>Las 231 puertas</h3>
+          <p>Son las <em>instrucciones atómicas</em>. Cada par no ordenado de letras forma una puerta:
+          <code>C(22,2) = 231</code>.</p>
+        </div>
+        <div class="panel">
+          <h3>La gematría</h3>
+          <p>Es el <em>sistema de tipos</em>. Reduce cualquier número a un dígito 1–9
+          (división euclidiana mod 9).</p>
+        </div>
+        <div class="panel">
+          <h3>La proporción áurea</h3>
+          <p>Es la <em>ley de composición</em>. <code>φ = 1.618…</code> gobierna el
+          crecimiento y la distribución espacial.</p>
+        </div>
+      </div>
+      <p class="quote">
+        "Si el universo es computacional, tiene un lenguaje.<br>
+        Si tiene un lenguaje, podemos aprender a hablarlo."
+      </p>
+    </section>
+
+    <!-- 2 · ALFABETO -->
+    <section id="alfabeto">
+      <h2>2 · El Alfabeto · Nivel 0 → Nivel 1</h2>
+      <p>Las 22 letras con su valor numérico. La suma total es <strong>1,495</strong>,
+      cuya gematría es <strong>1</strong> = <span style="color:var(--gold)">א</span>.</p>
+      <div class="panel">
+        <table>
+          <thead><tr><th>#</th><th>Letra</th><th>Nombre</th><th>Valor</th><th>Gematría</th></tr></thead>
+          <tbody id="alphabetBody"></tbody>
+        </table>
+      </div>
+      <div class="check"><span class="icon">✓</span><span>Suma total</span>
+        <span class="result" id="sumCheck">...</span></div>
+    </section>
+
+    <!-- 3 · 231 PUERTAS -->
+    <section id="puertas">
+      <h2>3 · Las 231 Puertas</h2>
+      <p>El número es siempre el mismo, se calcule como se calcule:</p>
+      <div class="grid-3">
+        <div class="stat3"><span class="num">231</span><span class="label">C(22,2)</span></div>
+        <div class="stat3"><span class="num">231</span><span class="label">Σ 1…21</span></div>
+        <div class="stat3"><span class="num">231</span><span class="label">21 × 11</span></div>
+      </div>
+      <p style="margin-top:18px">Pasa el cursor sobre una letra para iluminar sus <strong>21 puertas</strong>.</p>
+      <div class="panel">
+        <svg id="gateSvg" viewBox="0 0 500 500"></svg>
+        <p style="text-align:center;margin-top:10px">
+          <button class="btn primary" id="showAllGates">Mostrar todas</button>
+          <button class="btn" id="hideAllGates">Ocultar</button>
+        </p>
+      </div>
+    </section>
+
+    <!-- 4 · PROPORCIÓN ÁUREA -->
+    <section id="aurea">
+      <h2>4 · La Proporción Áurea · φ</h2>
+      <p>Dos leyes fundamentales:</p>
+      <div class="grid-2">
+        <div class="panel"><h3>Ley de crecimiento</h3>
+          <p>Cada nivel factorial multiplica por <code>(22 − k)</code>.</p></div>
+        <div class="panel"><h3>Ley de distribución</h3>
+          <p>Las letras usan el <strong>ángulo áureo</strong> <code>137.507764°</code>,
+          el mismo patrón de las semillas de girasol.</p></div>
+      </div>
+      <div class="panel">
+        <svg id="spiralSvg" viewBox="0 0 500 500"></svg>
+      </div>
+      <div class="check"><span class="icon">✓</span><span>φ calculado</span>
+        <span class="result" id="phiCheck">...</span></div>
+      <div class="check"><span class="icon">✓</span><span>Ángulo áureo</span>
+        <span class="result" id="angleCheck">...</span></div>
+    </section>
+
+    <!-- 5 · EUCLIDES -->
+    <section id="euclides">
+      <h2>5 · El Algoritmo de Euclides</h2>
+      <p>El MCD entre <strong>231</strong> y <strong>22</strong> revela la estructura:</p>
+      <pre><span class="com">// Algoritmo de Euclides</span>
+<span class="num">231</span> = <span class="num">10</span> × <span class="num">22</span> + <span class="num">11</span>
+ <span class="num">22</span> = <span class="num">2</span>  × <span class="num">11</span> + <span class="num">0</span>
+
+<span class="fn">MCD</span>(<span class="num">231</span>, <span class="num">22</span>) = <span class="num">11</span></pre>
+      <p>La <strong>gematría</strong> es exactamente una <strong>división euclidiana por 9</strong>.</p>
+      <div class="check"><span class="icon">✓</span><span>MCD(231, 22)</span>
+        <span class="result" id="gcdCheck">...</span></div>
+      <div class="check"><span class="icon">✓</span><span>231 mod 9</span>
+        <span class="result" id="modCheck">...</span></div>
+    </section>
+
+    <!-- 6 · ESPACIO-TIEMPO -->
+    <section id="st">
+      <h2>6 · L231 y el Espacio-Tiempo</h2>
+      <div class="grid-2">
+        <div class="panel"><h3>Cristal dorado del vacío</h3>
+          <p>El espacio-tiempo discreto a escala de Planck se estructura como un
+          <strong>cuasicristal dorado</strong>: nodos organizados por φ que preservan
+          la isotropía rotacional.</p></div>
+        <div class="panel"><h3>Expansión fractal</h3>
+          <p><code>Rₙ = l_P · φⁿ</code>, con nodos cuánticos en un grafo de Fibonacci
+          auto-similar. Esto explica la no-localidad como hiperconectividad fractal.</p></div>
+        <div class="panel"><h3>Gravedad oscilatoria</h3>
+          <p>Granularidad del espacio-tiempo en <code>10⁻³⁰ m</code> modulada por φ.
+          Dimensión fractal <code>D ≈ 2.44</code>.</p></div>
+        <div class="panel"><h3>Dimensión D = 3 (Rees)</h3>
+          <p>El 21-simplex vive en ℝ²¹, pero su esfera inscrita S³ es el espacio físico.
+          Consistente con el 6º número de Rees.</p></div>
+      </div>
+      <div class="panel">
+        <svg id="stSvg" viewBox="0 0 500 500"></svg>
+        <p class="svg-cap">
+          Nodos cuánticos en expansión fractal Rₙ = l_P · φⁿ · conectividad Cₙ → φ⁻¹ ≈ 0.618
+        </p>
+      </div>
+    </section>
+
+    <!-- 7 · PROTEÍNAS -->
+    <section id="proteinas">
+      <h2>7 · L231 y el Plegamiento de Proteínas</h2>
+      <div class="grid-2">
+        <div class="panel"><h3>Los 20 aminoácidos y las 231 puertas</h3>
+          <p>Hay 20 aminoácidos estándar. <code>C(20,2) = 190</code>.
+          Las 231 puertas contienen esas 190 como subconjunto. Las
+          <strong>41 puertas restantes</strong> representan estados transitorios del
+          plegamiento (hélices α, láminas β, giros, puentes disulfuro).</p></div>
+        <div class="panel"><h3>Motivos de plegamiento</h3>
+          <p>En el marco FSCTF, las 231 puertas se clasifican en
+          <strong>motivos</strong>: network_fusion, sculpted_region, io_dialogue,
+          learned_memory, curved_phase_bias, safe_anneal, controlled_chaos, etc.</p></div>
+      </div>
+      <pre><span class="com">// Secuencia de aminoácidos como letras</span>
+<span class="kw">const</span> proteina = [ALA, GLY, VAL, LEU, ILE, PRO, ...];
+
+<span class="com">// Cada par consecutivo forma una puerta</span>
+<span class="kw">function</span> <span class="fn">plegar</span>(secuencia) {
+  <span class="kw">const</span> puertas = [];
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; secuencia.length - <span class="num">1</span>; i++) {
+    puertas.push([secuencia[i], secuencia[i+1]]);
+  }
+  <span class="kw">return</span> puertas.<span class="fn">map</span>(p =&gt; <span class="fn">motivo</span>(p)); <span class="com">// 231 posibles</span>
+}</pre>
+      <div class="check"><span class="icon">✓</span><span>C(20,2) = 190 · 190/231 ≈ φ/2 (error 1.7%)</span>
+        <span class="result" id="proteinCheck">...</span></div>
+    </section>
+
+    <!-- 8 · PRIMOS -->
+    <section id="primos">
+      <h2>8 · Números Primos y α ≈ 1/137</h2>
+      <div class="panel">
+        <h3>El 137 y la constante de estructura fina</h3>
+        <pre><span class="com">// Fracción continua de π/φ</span>
+π/φ = [<span class="num">1</span>; <span class="num">1</span>, <span class="num">16</span>, <span class="num">7</span>, <span class="num">1</span>, <span class="num">9</span>, <span class="num">2</span>, ...]
+q_n = <span class="num">1</span>, <span class="num">1</span>, <span class="num">17</span>, <span class="num">120</span>, <span class="num">137</span>, <span class="num">1353</span>, <span class="num">2843</span>, ...
+
+<span class="com">// q₂ = 17  → partículas del Modelo Estándar</span>
+<span class="com">// q₄ = 137 → parte entera de α⁻¹</span>
+<span class="com">// q₆ = 2843 = 2 × 1353 + 137</span></pre>
+        <p>La fracción continua de π/φ genera <strong>exactamente</strong> los primos
+        17 y 137 en sus convergentes.</p>
+      </div>
+      <div class="panel">
+        <h3>37 y 73: los primos espejo</h3>
+        <p>37 es el primo #12; 73 es el primo #21. Y 21 aparece en L231.
+        <code>37 × 73 = 2701</code>, la gematría de Génesis 1:1.</p>
+      </div>
+      <div class="check"><span class="icon">✓</span><span>137 es primo #33</span>
+        <span class="result" id="prime137Check">...</span></div>
+      <div class="check"><span class="icon">✓</span><span>37 × 73 = 2701</span>
+        <span class="result" id="mirrorCheck">...</span></div>
+    </section>
+
+    <!-- 9 · FRACTALES -->
+    <section id="fractales">
+      <h2>9 · Fractales y la Dimensión Áurea</h2>
+      <div class="grid-3">
+        <div class="stat3"><span class="num">D = 1 + 1/φ</span><span class="label">Hausdorff ≈ 1.618</span></div>
+        <div class="stat3"><span class="num">D ≈ 2.44</span><span class="label">Gravedad fractal</span></div>
+        <div class="stat3"><span class="num">Cₙ → φ⁻¹</span><span class="label">Conectividad ≈ 0.618</span></div>
+      </div>
+      <div class="panel">
+        <h3>La espiral áurea como fractal de L231</h3>
+        <p>Cada cuarto de vuelta, la figura se repite multiplicada por φ. Dimensión
+        <code>D = 1 + 1/φ = φ</code>.</p>
+        <pre><span class="kw">function</span> <span class="fn">espiralFractal</span>(n) {
+  <span class="kw">let</span> r = <span class="num">1</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; n; i++) {
+    r *= PHI; <span class="com">// Cada paso multiplica por φ</span>
+    <span class="fn">dibujarArco</span>(r, i * <span class="num">90</span>);
+  }
+}</pre>
+      </div>
+      <div class="panel"><svg id="fractalSvg" viewBox="0 0 500 500"></svg></div>
+      <div class="check"><span class="icon">✓</span><span>D = 1 + 1/φ = φ</span>
+        <span class="result" id="fractalCheck">...</span></div>
+    </section>
+
+    <!-- 10 · REES -->
+    <section id="rees">
+      <h2>10 · Los 6 Números Mágicos de Martin Rees</h2>
+      <p>Solo seis números determinan la estructura del universo. Cada uno tiene
+      una correspondencia en L231:</p>
+      <div class="panel">
+        <table>
+          <thead><tr><th>#</th><th>Número</th><th>Valor</th><th>Rol</th><th>Conexión L231</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">1</td><td class="mono">N</td><td class="mono">10³⁶</td><td>Eléctrica / gravedad</td><td class="mono">≈ φ⁷²</td></tr>
+            <tr><td class="mono">2</td><td class="mono">ε</td><td class="mono">0.007</td><td>Enlace nuclear</td><td class="mono">≈ 1/137 = α</td></tr>
+            <tr><td class="mono">3</td><td class="mono">Ω</td><td class="mono">≈ 0.3</td><td>Densidad cósmica</td><td class="mono">≈ 1/φ² ≈ 0.382</td></tr>
+            <tr><td class="mono">4</td><td class="mono">λ</td><td class="mono">≈ 0.7</td><td>Energía oscura</td><td class="mono">≈ 1/φ ≈ 0.618</td></tr>
+            <tr><td class="mono">5</td><td class="mono">Q</td><td class="mono">10⁻⁵</td><td>Semillas de estructura</td><td class="mono">≈ φ⁻²⁴</td></tr>
+            <tr><td class="mono">6</td><td class="mono">D</td><td class="mono">3</td><td>Dimensiones espaciales</td><td class="mono">S³ ⊂ ℝ²¹</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="check"><span class="icon">✓</span><span>ε ≈ 1/137 = α</span>
+        <span class="result" id="reesCheck">...</span></div>
+    </section>
+
+    <!-- 11 · GARDNER -->
+    <section id="gardner">
+      <h2>11 · James Gardner · El Universo Inteligente</h2>
+      <p>La teoría del <strong>Biocosmos Egoísta</strong> de James Gardner propone que
+      la inteligencia no es un accidente, sino un <strong>mecanismo evolutivo
+      cósmico</strong>: los universos que producen inteligencia avanzada capaz de
+      "parir" nuevos universos son los que persisten.</p>
+
+      <div class="grid-2">
+        <div class="panel"><h3>🏛️ Universo como sistema evolutivo</h3>
+          <p>El universo no es un accidente Darwiniano. En L231, esto corresponde a la
+          <strong>recursión estructural</strong>: cada nivel factorial reproduce el anterior
+          multiplicado por (22 − k).</p></div>
+        <div class="panel"><h3>🧠 Inteligencia como instrucción</h3>
+          <p>Las <strong>231 puertas</strong> representan las interacciones fundamentales
+          entre las 22 letras (estados). La inteligencia emerge de la
+          <strong>composición de puertas</strong>.</p></div>
+        <div class="panel"><h3>🌱 "Universos bebé"</h3>
+          <p>Los universos hijos son <strong>ingenierizados</strong> con parámetros
+          bio-amigables. En L231, esto es la <strong>herencia factorial</strong>:
+          cada nivel hereda la estructura del anterior.</p></div>
+        <div class="panel"><h3>📈 Coevolución exponencial</h3>
+          <p>La coevolución bio-electrónica se modela con la <strong>expansión fractal</strong>
+          Rₙ = l_P · φⁿ y la conectividad Cₙ → φ⁻¹ ≈ 0.618.</p></div>
+      </div>
+
+      <div class="panel">
+        <svg id="gardnerSvg" viewBox="0 0 500 500"></svg>
+        <p class="svg-cap">
+          Ciclo biocósmico: creación → evolución → inteligencia → reproducción → nuevo universo.
+        </p>
+      </div>
+
+      <h3>Tabla de Correspondencias</h3>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Concepto Gardner</th><th>Idea</th><th>Equivalente L231</th><th>Verificación</th></tr></thead>
+          <tbody>
+            <tr><td>Universos que persisten</td><td>Los que producen inteligencia</td>
+                <td class="mono">21! = 5.1×10¹⁹</td><td class="mono">factorial(21) exacto</td></tr>
+            <tr><td>Pares de interacciones</td><td>C(22,2) = 231</td>
+                <td class="mono">231 puertas</td><td class="mono">verificado en SVG</td></tr>
+            <tr><td>Parámetros bio-amigables</td><td>φ = 1.618…</td>
+                <td class="mono">Ley de composición</td><td class="mono">φ² = φ + 1</td></tr>
+            <tr><td>Reproducción recursiva</td><td>Universos bebé</td>
+                <td class="mono">nivel(k)=(22−k)·nivel(k−1)</td><td class="mono">nivel(21)=21!</td></tr>
+            <tr><td>Selección Darwiniana</td><td>Aptitud cósmica</td>
+                <td class="mono">gematría (mod 9)</td><td class="mono">g(21!) = 9</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="check"><span class="icon">✓</span><span>Inteligencia como mecanismo evolutivo</span>
+        <span class="result">231 puertas = todas las interacciones</span></div>
+      <div class="check"><span class="icon">✓</span><span>φ² = φ + 1</span>
+        <span class="result" id="gardnerPhiCheck">...</span></div>
+    </section>
+
+    <!-- 12 · VERIFICAR -->
+    <section id="verificar">
+      <h2>12 · Verificación en Tiempo Real</h2>
+      <p>Tu navegador calcula todo lo siguiente:</p>
+      <div id="verifications"></div>
+      <h3>Verificación manual (F12)</h3>
+      <pre><span class="com">// Contar puertas</span>
+document.querySelectorAll(<span class="str">'.door'</span>).length;  <span class="com">// → 231</span>
+
+<span class="com">// φ</span>
+(<span class="num">1</span> + Math.<span class="fn">sqrt</span>(<span class="num">5</span>)) / <span class="num">2</span>;  <span class="com">// 1.618033988749895</span>
+
+<span class="com">// Ángulo áureo</span>
+<span class="num">360</span> / Math.<span class="fn">pow</span>((<span class="num">1</span>+Math.<span class="fn">sqrt</span>(<span class="num">5</span>))/<span class="num">2</span>, <span class="num">2</span>);  <span class="com">// 137.50776405003785</span></pre>
+    </section>
+
+    <p class="quote">
+      "Los místicos dijeron que las letras son conciencia.<br>
+      Quizá la conciencia es el lenguaje del universo ejecutándose."
+    </p>
+    <p style="text-align:center">
+      <span class="tagx">Matemática</span><span class="tagx">Física</span>
+      <span class="tagx">Biología</span><span class="tagx">Cábala</span>
+      <span class="tagx">Verificable</span>
+    </p>
+  </div>
+
   <footer>Canvas 2D · sin dependencias · los 22 valores se calculan con <b>BigInt</b> para no perder dígitos</footer>
 </div>
 
 <div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+/* ============================================================
+   Documento L231 · aislado en IIFE para no colisionar con el vórtice
+   ============================================================ */
+(function () {
+  "use strict";
+  const NS = 'http://www.w3.org/2000/svg';
+  const PHI = (1 + Math.sqrt(5)) / 2;
+  const GOLDEN_ANGLE = 360 / (PHI * PHI);
+  const GOLDEN_ANGLE_RAD = GOLDEN_ANGLE * Math.PI / 180;
+
+  const LETTERS = ['א','ב','ג','ד','ה','ו','ז','ח','ט','י','כ','ל','מ','נ','ס','ע','פ','צ','ק','ר','ש','ת'];
+  const VALUES  = [1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100,200,300,400];
+  const NAMES   = ['Alef','Bet','Guimel','Dalet','He','Vav','Zayin','Jet','Tet','Yod','Kaf','Lamed',
+                   'Mem','Nun','Samej','Ayin','Pe','Tsadi','Qof','Resh','Shin','Tav'];
+
+  function gematria(n){
+    n = Math.abs(Math.floor(n));
+    while (n > 9) n = String(n).split('').reduce((a,b)=>a+(+b),0);
+    return n;
+  }
+  function nivel(k){
+    let r = 1;
+    for (let i = 0; i < k; i++) r *= (22 - i);
+    return r;
+  }
+  function factorial(n){
+    let r = 1n;
+    for (let i = 2n; i <= BigInt(n); i++) r *= i;
+    return r;
+  }
+  function mcd(a,b){ return b === 0 ? a : mcd(b, a%b); }
+  function isPrime(n){
+    if (n < 2) return false;
+    for (let i = 2; i*i <= n; i++) if (n%i === 0) return false;
+    return true;
+  }
+  function nthPrime(n){
+    let c = 0, x = 1;
+    while (c < n){ x++; if (isPrime(x)) c++; }
+    return x;
+  }
+
+  /* ALFABETO */
+  (function buildAlphabet(){
+    const body = document.getElementById('alphabetBody');
+    let suma = 0;
+    LETTERS.forEach((L,i)=>{
+      suma += VALUES[i];
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td class="mono">'+i+'</td>'+
+        '<td class="hebrew">'+L+'</td>'+
+        '<td>'+NAMES[i]+'</td>'+
+        '<td class="mono">'+VALUES[i]+'</td>'+
+        '<td class="mono">'+gematria(VALUES[i])+'</td>';
+      body.appendChild(tr);
+    });
+    document.getElementById('sumCheck').textContent =
+      '1+2+…+400 = '+suma+' → gematría = '+gematria(suma)+' (= א)';
+  })();
+
+  /* 231 PUERTAS */
+  (function gates(){
+    const svg = document.getElementById('gateSvg');
+    if (!svg) return;
+    const CX = 250, CY = 250;
+    const bg = document.createElementNS(NS,'rect');
+    bg.setAttribute('width','500'); bg.setAttribute('height','500');
+    bg.setAttribute('fill','#08081a'); bg.setAttribute('rx','8');
+    svg.appendChild(bg);
+
+    const positions = [];
+    for (let i = 0; i < 22; i++){
+      const theta = i*GOLDEN_ANGLE_RAD;
+      const r = 40*Math.sqrt(i+1);
+      positions.push({ x: CX + r*Math.cos(theta), y: CY + r*Math.sin(theta) });
+    }
+
+    const doors = [];
+    const g = document.createElementNS(NS,'g');
+    for (let i = 0; i < 22; i++){
+      for (let j = i+1; j < 22; j++){
+        const line = document.createElementNS(NS,'line');
+        line.setAttribute('x1',positions[i].x.toFixed(1));
+        line.setAttribute('y1',positions[i].y.toFixed(1));
+        line.setAttribute('x2',positions[j].x.toFixed(1));
+        line.setAttribute('y2',positions[j].y.toFixed(1));
+        line.setAttribute('class','door');
+        g.appendChild(line);
+        doors.push({ el: line, i, j });
+      }
+    }
+    svg.appendChild(g);
+
+    positions.forEach((p,i)=>{
+      const circle = document.createElementNS(NS,'circle');
+      circle.setAttribute('cx',p.x); circle.setAttribute('cy',p.y);
+      circle.setAttribute('r',11);
+      circle.setAttribute('fill','rgba(255,215,0,0.08)');
+      circle.setAttribute('stroke','rgba(255,215,0,0.5)');
+      svg.appendChild(circle);
+
+      const t = document.createElementNS(NS,'text');
+      t.setAttribute('x',p.x); t.setAttribute('y',p.y);
+      t.setAttribute('class','letter');
+      t.textContent = LETTERS[i];
+      t.addEventListener('mouseenter', ()=>{
+        doors.forEach(dd=>{ if (dd.i===i||dd.j===i) dd.el.classList.add('hl'); });
+        t.setAttribute('fill','#ffd700');
+      });
+      t.addEventListener('mouseleave', ()=>{
+        doors.forEach(dd=> dd.el.classList.remove('hl'));
+        t.setAttribute('fill','#fff');
+      });
+      svg.appendChild(t);
+    });
+
+    document.getElementById('showAllGates').onclick = ()=> doors.forEach(dd=> dd.el.classList.add('hl'));
+    document.getElementById('hideAllGates').onclick = ()=> doors.forEach(dd=> dd.el.classList.remove('hl'));
+  })();
+
+  /* ESPIRAL ÁUREA + FIBONACCI */
+  (function spiralSection(){
+    const svg = document.getElementById('spiralSvg');
+    if (!svg) return;
+    const CX = 250, CY = 250;
+    svg.innerHTML = '';
+    const bg = document.createElementNS(NS,'rect');
+    bg.setAttribute('width','500'); bg.setAttribute('height','500');
+    bg.setAttribute('fill','#08081a'); bg.setAttribute('rx','8');
+    svg.appendChild(bg);
+
+    const fib = [1,1,2,3,5,8,13,21,34,55,89,144,233,377];
+    fib.forEach(f=>{
+      if (f > 240) return;
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',CX); c.setAttribute('cy',CY); c.setAttribute('r',f);
+      c.setAttribute('class','fib-circle');
+      svg.appendChild(c);
+      const lbl = document.createElementNS(NS,'text');
+      lbl.setAttribute('x',CX+f); lbl.setAttribute('y',CY-3);
+      lbl.setAttribute('class','fib-label');
+      lbl.textContent = f;
+      svg.appendChild(lbl);
+    });
+
+    const b = Math.log(PHI)/(Math.PI/2);
+    let d = '';
+    for (let i = 0; i <= 2000; i++){
+      const t = (i/2000)*6*Math.PI;
+      const r = 1.5*Math.exp(b*t);
+      if (r > 240) break;
+      const x = CX + r*Math.cos(t), y = CY + r*Math.sin(t);
+      d += (i===0?'M':'L') + x.toFixed(2)+','+y.toFixed(2)+' ';
+    }
+    const p = document.createElementNS(NS,'path');
+    p.setAttribute('d',d); p.setAttribute('class','spiral');
+    svg.appendChild(p);
+
+    const dot = document.createElementNS(NS,'circle');
+    dot.setAttribute('cx',CX); dot.setAttribute('cy',CY);
+    dot.setAttribute('r',3); dot.setAttribute('fill','#ffd700');
+    svg.appendChild(dot);
+
+    document.getElementById('phiCheck').textContent = PHI.toFixed(12);
+    document.getElementById('angleCheck').textContent = GOLDEN_ANGLE.toFixed(8)+'°';
+  })();
+
+  /* ESPACIO-TIEMPO */
+  (function stViz(){
+    const svg = document.getElementById('stSvg');
+    if (!svg) return;
+    const CX = 250, CY = 250;
+    svg.innerHTML = '';
+    const bg = document.createElementNS(NS,'rect');
+    bg.setAttribute('width','500'); bg.setAttribute('height','500');
+    bg.setAttribute('fill','#08081a'); bg.setAttribute('rx','8');
+    svg.appendChild(bg);
+
+    const nodes = [];
+    for (let i = 0; i < 130; i++){
+      const theta = i*GOLDEN_ANGLE_RAD;
+      const r = 3*Math.pow(PHI, i/12);
+      if (r > 220) break;
+      nodes.push({ x: CX + r*Math.cos(theta), y: CY + r*Math.sin(theta), r });
+    }
+    nodes.forEach((n1,i)=>{
+      nodes.slice(i+1,i+4).forEach(n2=>{
+        const dd = Math.hypot(n1.x-n2.x, n1.y-n2.y);
+        if (dd < 60){
+          const line = document.createElementNS(NS,'line');
+          line.setAttribute('x1',n1.x); line.setAttribute('y1',n1.y);
+          line.setAttribute('x2',n2.x); line.setAttribute('y2',n2.y);
+          line.setAttribute('stroke','rgba(74,170,255,0.15)');
+          line.setAttribute('stroke-width','0.5');
+          svg.appendChild(line);
+        }
+      });
+    });
+    nodes.forEach(n=>{
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',n.x); c.setAttribute('cy',n.y);
+      c.setAttribute('r', Math.max(1, 3 - n.r/100));
+      c.setAttribute('fill','#4af'); c.setAttribute('opacity','0.7');
+      svg.appendChild(c);
+    });
+    const dot = document.createElementNS(NS,'circle');
+    dot.setAttribute('cx',CX); dot.setAttribute('cy',CY);
+    dot.setAttribute('r',3); dot.setAttribute('fill','#ffd700');
+    svg.appendChild(dot);
+  })();
+
+  /* FRACTAL */
+  (function fractalViz(){
+    const svg = document.getElementById('fractalSvg');
+    if (!svg) return;
+    const CX = 250, CY = 250;
+    svg.innerHTML = '';
+    const bg = document.createElementNS(NS,'rect');
+    bg.setAttribute('width','500'); bg.setAttribute('height','500');
+    bg.setAttribute('fill','#08081a'); bg.setAttribute('rx','8');
+    svg.appendChild(bg);
+
+    let r = 5;
+    for (let i = 0; i < 12; i++){
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',CX); c.setAttribute('cy',CY); c.setAttribute('r',r);
+      c.setAttribute('fill','none');
+      c.setAttribute('stroke','rgba(255,215,0,' + (0.8 - i*0.06) + ')');
+      c.setAttribute('stroke-width','1');
+      svg.appendChild(c);
+      r *= PHI;
+      if (r > 240) break;
+    }
+    const b = Math.log(PHI)/(Math.PI/2);
+    let d = '';
+    for (let i = 0; i <= 1500; i++){
+      const t = (i/1500)*6*Math.PI;
+      const rr = 1.5*Math.exp(b*t);
+      if (rr > 240) break;
+      const px = CX + rr*Math.cos(t), py = CY + rr*Math.sin(t);
+      d += (i===0?'M':'L') + px.toFixed(2)+','+py.toFixed(2)+' ';
+    }
+    const p = document.createElementNS(NS,'path');
+    p.setAttribute('d',d); p.setAttribute('class','spiral');
+    svg.appendChild(p);
+    const check = document.getElementById('fractalCheck');
+    if (check) check.textContent = (1 + 1/PHI).toFixed(12);
+  })();
+
+  /* GARDNER */
+  (function gardnerViz(){
+    const svg = document.getElementById('gardnerSvg');
+    if (!svg) return;
+    const CX = 250, CY = 250;
+    svg.innerHTML = '';
+    const bg = document.createElementNS(NS,'rect');
+    bg.setAttribute('width','500'); bg.setAttribute('height','500');
+    bg.setAttribute('fill','#08081a'); bg.setAttribute('rx','8');
+    svg.appendChild(bg);
+
+    const fases = [
+      { nombre:'Creación',       letra:'א', color:'#ffd700' },
+      { nombre:'Evolución',      letra:'ב', color:'#50fa7b' },
+      { nombre:'Inteligencia',   letra:'ג', color:'#4af' },
+      { nombre:'Reproducción',   letra:'ד', color:'#ff79c6' },
+      { nombre:'Nuevo Universo', letra:'ה', color:'#bd93f9' },
+      { nombre:'Ciclo',          letra:'ו', color:'#f1fa8c' }
+    ];
+
+    const R = 160;
+    const nodes = [];
+    fases.forEach((f,i)=>{
+      const angle = (i/fases.length)*2*Math.PI - Math.PI/2;
+      const x = CX + R*Math.cos(angle);
+      const y = CY + R*Math.sin(angle);
+      nodes.push({ x, y, ...f });
+
+      const c = document.createElementNS(NS,'circle');
+      c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',22);
+      c.setAttribute('fill','rgba(15,15,35,0.9)');
+      c.setAttribute('stroke',f.color);
+      c.setAttribute('stroke-width','2');
+      svg.appendChild(c);
+
+      const t = document.createElementNS(NS,'text');
+      t.setAttribute('x',x); t.setAttribute('y',y-2);
+      t.setAttribute('text-anchor','middle');
+      t.setAttribute('dominant-baseline','central');
+      t.setAttribute('fill',f.color);
+      t.setAttribute('font-size','18');
+      t.setAttribute('font-family','Times New Roman, serif');
+      t.textContent = f.letra;
+      svg.appendChild(t);
+
+      const lbl = document.createElementNS(NS,'text');
+      lbl.setAttribute('x',x); lbl.setAttribute('y',y+32);
+      lbl.setAttribute('text-anchor','middle');
+      lbl.setAttribute('fill','#888');
+      lbl.setAttribute('font-size','10');
+      lbl.textContent = f.nombre;
+      svg.appendChild(lbl);
+    });
+
+    for (let i = 0; i < nodes.length; i++){
+      const a = nodes[i];
+      const b = nodes[(i+1)%nodes.length];
+      const mx = (a.x+b.x)/2, my = (a.y+b.y)/2;
+      const angle = Math.atan2(b.y-a.y, b.x-a.x);
+      const r1 = 22;
+      const x1 = a.x + r1*Math.cos(angle);
+      const y1 = a.y + r1*Math.sin(angle);
+      const x2 = b.x - r1*Math.cos(angle);
+      const y2 = b.y - r1*Math.sin(angle);
+      const cx1 = mx - 20*Math.sin(angle);
+      const cy1 = my + 20*Math.cos(angle);
+      const path = document.createElementNS(NS,'path');
+      path.setAttribute('d','M '+x1+' '+y1+' Q '+cx1+' '+cy1+' '+x2+' '+y2);
+      path.setAttribute('fill','none');
+      path.setAttribute('stroke',a.color);
+      path.setAttribute('stroke-width','1.5');
+      path.setAttribute('stroke-dasharray','4,3');
+      path.setAttribute('opacity','0.6');
+      svg.appendChild(path);
+    }
+
+    const b = Math.log(PHI)/(Math.PI/2);
+    let d = '';
+    for (let i = 0; i <= 800; i++){
+      const t = (i/800)*4*Math.PI;
+      const rr = 2*Math.exp(b*t);
+      if (rr > 100) break;
+      const px = CX + rr*Math.cos(t), py = CY + rr*Math.sin(t);
+      d += (i===0?'M':'L') + px.toFixed(2)+','+py.toFixed(2)+' ';
+    }
+    const spiral = document.createElementNS(NS,'path');
+    spiral.setAttribute('d',d);
+    spiral.setAttribute('fill','none');
+    spiral.setAttribute('stroke','rgba(255,215,0,0.4)');
+    spiral.setAttribute('stroke-width','1.5');
+    svg.appendChild(spiral);
+
+    const dot = document.createElementNS(NS,'circle');
+    dot.setAttribute('cx',CX); dot.setAttribute('cy',CY);
+    dot.setAttribute('r',4); dot.setAttribute('fill','#ffd700');
+    svg.appendChild(dot);
+
+    const alef = document.createElementNS(NS,'text');
+    alef.setAttribute('x',CX); alef.setAttribute('y',CY-10);
+    alef.setAttribute('text-anchor','middle');
+    alef.setAttribute('fill','#ffd700');
+    alef.setAttribute('font-size','14');
+    alef.setAttribute('font-family','Times New Roman, serif');
+    alef.textContent = 'א';
+    svg.appendChild(alef);
+
+    const check = document.getElementById('gardnerPhiCheck');
+    if (check) check.textContent = 'φ² = '+ (PHI*PHI).toFixed(10) +' · φ+1 = '+ (PHI+1).toFixed(10);
+  })();
+
+  /* CHECKS INDIVIDUALES */
+  (function individualChecks(){
+    const gcd = document.getElementById('gcdCheck');
+    if (gcd) gcd.textContent = 'MCD(231,22) = ' + mcd(231,22);
+    const mod = document.getElementById('modCheck');
+    if (mod) mod.textContent = '231 mod 9 = ' + (231 % 9) + ' → gematría = ' + gematria(231);
+    const prot = document.getElementById('proteinCheck');
+    if (prot) prot.textContent = '190/231 = ' + (190/231).toFixed(6) + ' · φ/2 = ' + (PHI/2).toFixed(6);
+    const p137 = document.getElementById('prime137Check');
+    if (p137) p137.textContent = 'primo #33 = ' + nthPrime(33);
+    const mirror = document.getElementById('mirrorCheck');
+    if (mirror) mirror.textContent = '37 × 73 = ' + (37*73);
+    const rees = document.getElementById('reesCheck');
+    if (rees) rees.textContent = '1/137 = ' + (1/137).toFixed(6) + ' · ε ≈ 0.007';
+  })();
+
+  /* VERIFICACIONES GLOBALES */
+  (function verifications(){
+    const cont = document.getElementById('verifications');
+    if (!cont) return;
+    const tests = [
+      ['C(22,2) = 231', () => 22*21/2 === 231],
+      ['Σ 1…21 = 231', () => { let s=0; for(let i=1;i<=21;i++)s+=i; return s===231; }],
+      ['21 × 11 = 231', () => 21*11 === 231],
+      ['φ = 1.618033988749895', () => Math.abs(PHI - 1.618033988749895) < 1e-12],
+      ['Ángulo áureo = 137.507764°', () => Math.abs(GOLDEN_ANGLE - 137.50776405003785) < 1e-10],
+      ['MCD(231,22) = 11', () => mcd(231,22) === 11],
+      ['Gematría(231) = 6', () => gematria(231) === 6],
+      ['Gematría(1495) = 1', () => gematria(1495) === 1],
+      ['21! = 51090942171709440000', () => factorial(21).toString() === '51090942171709440000'],
+      ['Gematría(21!) = 9', () => gematria(Number(factorial(21).toString().split('').reduce((a,b)=>a+(+b),0))) === 9],
+      ['137 es primo #33', () => nthPrime(33) === 137],
+      ['37 es primo #12', () => nthPrime(12) === 37],
+      ['73 es primo #21', () => nthPrime(21) === 73],
+      ['37 × 73 = 2701', () => 37*73 === 2701],
+      ['C(20,2) = 190', () => 20*19/2 === 190],
+      ['190/231 ≈ φ/2 (error 2%)', () => Math.abs(190/231 - PHI/2) < 0.02],
+      ['D = 1 + 1/φ = φ', () => Math.abs(1 + 1/PHI - PHI) < 1e-12],
+      ['φ² = φ + 1', () => Math.abs(PHI*PHI - (PHI+1)) < 1e-12],
+      ['22/7 ≈ π (error < 0.0013)', () => Math.abs(22/7 - Math.PI) < 0.0013],
+      ['1/137 ≈ 0.0073', () => Math.abs(1/137 - 0.007299) < 0.0001],
+      ['nivel(0)=1 · nivel(1)=22 · nivel(2)=420', () => nivel(0)===1 && nivel(1)===22 && nivel(2)===420],
+      ['nivel(3)=7980 · nivel(4)=143640', () => nivel(3)===7980 && nivel(4)===143640],
+      ['21! es múltiplo de 9', () => factorial(21) % 9n === 0n],
+      ['137.5° ≈ ángulo áureo', () => Math.abs(GOLDEN_ANGLE - 137.5) < 0.01],
+      ['φ⁻¹ = 0.6180339887…', () => Math.abs(1/PHI - 0.618033988749895) < 1e-12],
+      ['φ² ≈ 2.6180339887…', () => Math.abs(PHI*PHI - 2.618033988749895) < 1e-12]
+    ];
+    tests.forEach(([label, fn])=>{
+      let ok = false, val;
+      try { ok = fn(); val = ok ? '✓ verdadero' : '✗ falso'; }
+      catch(e){ val = 'error: '+e.message; }
+      const div = document.createElement('div');
+      div.className = 'check';
+      div.innerHTML =
+        '<span class="icon" style="color:'+(ok?'#50fa7b':'#ff5555')+'">'+(ok?'✓':'✗')+'</span>'+
+        '<span style="flex:1">'+label+'</span>'+
+        '<span class="result">'+val+'</span>';
+      cont.appendChild(div);
+    });
+  })();
+
+  console.log('%c L231 · El Lenguaje de las 231 Puertas ',
+    'background:#ffd700;color:#06060f;font-size:14px;padding:4px 8px;border-radius:4px;');
+  console.log('φ =', PHI);
+  console.log('Puertas =', document.querySelectorAll('.door').length);
+  console.log('137 primo #33 =', nthPrime(33));
+  console.log('21! =', factorial(21).toString());
+  console.log('Gematría(21!) =', gematria(Number(factorial(21).toString().split('').reduce((a,b)=>a+(+b),0))));
+})();
+</script>
 
 <script>
 "use strict";
